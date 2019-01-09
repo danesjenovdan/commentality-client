@@ -27,7 +27,7 @@ footer {
     font-size: 0.8rem;
 
     a {
-      color: #000;
+      color: $text-color;
       text-decoration: none;
 
       &:hover {

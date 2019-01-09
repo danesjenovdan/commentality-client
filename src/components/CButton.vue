@@ -1,8 +1,7 @@
 <template>
-  <div class="button">
+  <button class="button">
     {{ text }}
-    <i :class="`fas fa-${icon}`" />
-  </div>
+  </button>
 </template>
 
 <script>
@@ -21,13 +20,22 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .button {
-  background: purple;
-  color: white;
+  $height: 52px;
+  border: 2px solid $primary-color;
+  border-radius: $height / 2;
+  background: transparent;
+  color: $text-color;
+  font-family: $font-family;
+  font-weight: 700;
+  font-size: 0.8rem;
+  height: $height;
   cursor: pointer;
-  font-size: 1.25rem;
-  padding: 0.5em 1em;
-  user-select: none;
+  text-transform: uppercase;
+
+  &:hover {
+    background-color: $bg-hover-color;
+  }
 }
 </style>

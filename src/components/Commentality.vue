@@ -35,7 +35,9 @@
       />
     </template>
     <template v-else>
-      <h3>Za ogled javnega mnenja se opredeli do naslednjih trditev</h3>
+      <h3 class="instructions">
+        Za ogled javnega mnenja se opredeli do naslednjih trditev:
+      </h3>
       <unvoted-post
         v-for="(post, index) in posts"
         v-show="!post.voted"
@@ -51,7 +53,7 @@
 <script>
 import UnvotedPost from './UnvotedPost.vue';
 import VotedPost from './VotedPost.vue';
-import CFooter from './Footer.vue';
+import CFooter from './CFooter.vue';
 
 export default {
   name: 'Commentality',
@@ -108,7 +110,7 @@ export default {
     text-align: center;
     font-style: italic;
     font-weight: 800;
-    border-bottom: 2px solid $separator-color;
+    border-bottom: 2px solid $primary-color;
     margin-left: -$wrapper-padding;
     margin-right: -$wrapper-padding;
     padding: $wrapper-padding;

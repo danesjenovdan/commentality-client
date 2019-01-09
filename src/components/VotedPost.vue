@@ -69,7 +69,7 @@ export default {
 
 <style lang="scss" scoped>
 .post {
-  border: 1px solid #f0f0f0;
+  border: 1px solid $border-color;
   margin: 1rem 0;
   padding: 1rem;
   text-align: center;
@@ -123,8 +123,8 @@ export default {
   .text {
     margin: 1rem 0 0 0;
     padding: 3rem;
-    background-color: #f9f9f9;
-    font-size: 1.5rem;
+    background-color: $bg-accent-color;
+    font-size: 1.65rem;
     font-weight: 200;
     border-radius: 12px;
   }
