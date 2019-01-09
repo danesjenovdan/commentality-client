@@ -50,8 +50,8 @@ export default {
           voted: false,
           votes: {
             yes: 78,
-            meh: 91,
-            no: 23,
+            meh: 2,
+            no: 3,
           },
         },
         {
@@ -100,27 +100,26 @@ export default {
 </script>
 
 <style lang="scss">
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-h1, h2, h3, h4, h5, h6 {margin-bottom: 0.5em;}
+@import url('https://fonts.googleapis.com/css?family=Sarabun:200,200i,400,700,700i,800,800i&subset=latin-ext');
 
 html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
   font-size: 18px;
 }
 
 body {
-  font-family: Helvetica, Arial, sans-serif;
   font-size: 1rem;
   overflow-y: scroll;
-}
-
-p {
-  line-height: 1.5em;
-  margin-bottom: 1em;
 }
 
 .container {

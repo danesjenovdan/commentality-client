@@ -1,25 +1,40 @@
 <template>
   <div class="post">
-    <p>{{ text }}</p>
-
     <div class="chart">
-      <div
-        v-for="(portion, name) in chartPortions"
-        :key="name"
-        :class="`portion ${name}`"
-        :style="`width: ${portion}%`"
-      >
-        {{ Math.round(portion) }} %
+      <div class="labels">
+        <div
+          v-for="(portion, name) in chartPortions"
+          :key="name"
+          :class="['portion-label', name]"
+          :style="`flex-basis: ${portion}%`"
+        >
+          <strong v-text="`${Math.round(portion)} %`" />
+          <span v-text="keyToLabel(name)" />
+        </div>
+      </div>
+      <div class="bars">
+        <div
+          v-for="(portion, name) in chartPortions"
+          :key="name"
+          :class="['portion-bar', name]"
+          :style="`flex-basis: ${portion}%`"
+        />
       </div>
     </div>
-
-    <div class="total">
-      {{ allVotes }} glasov
-    </div>
+    <p
+      class="text"
+      v-text="text"
+    />
   </div>
 </template>
 
 <script>
+const keyToLabelMap = {
+  yes: 'strinjanje',
+  no: 'nestrinjanje',
+  meh: 'neopredeljenost',
+};
+
 export default {
   name: 'Post',
   props: {
@@ -44,33 +59,74 @@ export default {
       };
     },
   },
+  methods: {
+    keyToLabel(key) {
+      return keyToLabelMap[key] || key;
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .post {
-  border: 2px solid #ccc;
-  font-size: 1.25rem;
+  border: 1px solid #f0f0f0;
   margin: 1rem 0;
   padding: 1rem;
   text-align: center;
-}
 
-.chart {
-  display: flex;
-  font-size: 1em;
+  .chart {
+    .labels,
+    .bars {
+      display: flex;
+    }
 
-  .portion {
-    height: 2rem;
-    line-height: 2rem;
+    .portion-label,
+    .portion-bar {
+      flex-shrink: 1;
+      flex-grow: 1;
+      margin-right: 4px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    .portion-label {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.8rem;
+      font-style: italic;
+      line-height: 1;
+      margin: 0 0.25rem 0.5rem 0.25rem;
+
+      strong {
+        font-weight: 800;
+      }
+
+      span {
+        font-weight: 200;
+      }
+    }
+
+    .portion-bar {
+      height: 12px;
+      border-radius: 12px;
+
+      @each $criterion, $color in $criteria-colors {
+        &.#{$criterion} {
+          background: $color;
+        }
+      }
+    }
   }
 
-  .yes { background: #b7d4bc; }
-  .meh { background: #d8d8d8; }
-  .no { background: #efaeaf; }
-}
-
-.total {
-  text-align: right;
+  .text {
+    margin: 1rem 0 0 0;
+    padding: 3rem;
+    background-color: #f9f9f9;
+    font-size: 1.5rem;
+    font-weight: 200;
+    border-radius: 12px;
+  }
 }
 </style>

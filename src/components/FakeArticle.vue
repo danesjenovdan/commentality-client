@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="fakepost">
     <h1>Šiško ovadil šest sodnikov</h1>
 
     <div class="image">
@@ -28,6 +28,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.fakepost {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+h1, h2, h3, h4, h5, h6 {margin-bottom: 0.5em;}
+
+
+p {
+  line-height: 1.5em;
+  margin-bottom: 1em;
+}
+
 .image {
   float: right;
   width: calc(50% - 0.5rem);
