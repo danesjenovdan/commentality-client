@@ -36,7 +36,7 @@ const keyToLabelMap = {
 };
 
 export default {
-  name: 'Post',
+  name: 'VotedPost',
   props: {
     text: {
       type: String,

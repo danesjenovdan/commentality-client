@@ -17,20 +17,19 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { chain, cloneDeep } from 'lodash';
-
-import Commentality from './components/Commentality.vue';
-import Comments from './components/Comments.vue';
+import { chain, cloneDeep, find } from 'lodash';
 import FakeArticle from './components/FakeArticle.vue';
-import Login from './components/Login.vue';
+import Commentality from './components/Commentality.vue';
+// import Comments from './components/Comments.vue';
+// import Login from './components/Login.vue';
 
 export default {
   name: 'App',
   components: {
-    Commentality,
-    Comments,
     FakeArticle,
-    Login,
+    Commentality,
+    // Comments,
+    // Login,
   },
   data() {
     return {
@@ -86,10 +85,11 @@ export default {
     },
   },
   methods: {
-    updateVote({ type, index }) {
+    updateVote({ post, vote }) {
       const newPosts = cloneDeep(this.posts);
-      newPosts[index].voted = true;
-      newPosts[index].votes[type] += 1;
+      const newPost = find(newPosts, p => p.text === post.text);
+      newPost.voted = true;
+      newPost.votes[vote] += 1;
       this.posts = newPosts;
     },
     updateSort(newSortCriterion) {

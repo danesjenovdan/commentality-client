@@ -2,23 +2,23 @@
   <div class="post">
     <p
       class="text"
-      v-text="text"
+      v-text="post.text"
     />
     <div class="buttons">
       <c-button
         text="Se strinjam"
         icon="thumbs-up"
-        @click.native="$emit('vote', 'yes')"
+        @click.native="$emit('vote', { post, vote: 'yes' })"
       />
       <c-button
         text="Ne znam se opredeliti"
         icon="hand-paper"
-        @click.native="$emit('vote', 'meh')"
+        @click.native="$emit('vote', { post, vote: 'meh' })"
       />
       <c-button
         text="Se ne strinjam"
         icon="thumbs-down"
-        @click.native="$emit('vote', 'no')"
+        @click.native="$emit('vote', { post, vote: 'no' })"
       />
     </div>
   </div>
@@ -28,13 +28,13 @@
 import CButton from './CButton.vue';
 
 export default {
-  name: 'Post',
+  name: 'UnvotedPost',
   components: {
     CButton,
   },
   props: {
-    text: {
-      type: String,
+    post: {
+      type: Object,
       required: true,
     },
   },
