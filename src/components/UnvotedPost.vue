@@ -7,17 +7,17 @@
     <div class="buttons">
       <c-button
         text="Se strinjam"
-        icon="thumbs-up"
+        icon="yes"
         @click.native="$emit('vote', { post, vote: 'yes' })"
       />
       <c-button
         text="Ne znam se opredeliti"
-        icon="hand-paper"
+        icon="meh"
         @click.native="$emit('vote', { post, vote: 'meh' })"
       />
       <c-button
         text="Se ne strinjam"
-        icon="thumbs-down"
+        icon="no"
         @click.native="$emit('vote', { post, vote: 'no' })"
       />
     </div>
