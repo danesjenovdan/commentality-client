@@ -17,11 +17,14 @@
 
 <style lang="scss" scoped>
 footer {
-  opacity: 0.5;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: $wrapper-padding;
+
+  .name,
+  .logo {
+    opacity: 0.5;
+  }
 
   .name {
     font-size: 0.8rem;

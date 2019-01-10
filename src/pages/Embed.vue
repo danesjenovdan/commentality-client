@@ -3,36 +3,28 @@
     id="app"
     class="container"
   >
-    <fake-article />
     <commentality
       :posts="sortedPosts"
       :current-sort-criterion="currentSortCriterion"
       @vote="updateVote"
       @sort="updateSort"
     />
-    <!-- <login v-if="!authenticated" />
-    <comments v-else /> -->
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import { chain, cloneDeep, find } from 'lodash';
-import FakeArticle from './components/FakeArticle.vue';
-import Commentality from './components/Commentality.vue';
-// import Comments from './components/Comments.vue';
-// import Login from './components/Login.vue';
+import Commentality from '../components/Commentality.vue';
 
 export default {
   name: 'App',
   components: {
-    FakeArticle,
     Commentality,
-    // Comments,
-    // Login,
   },
   data() {
     return {
+      articleId: null,
       currentSortCriterion: null,
       posts: [
         {
@@ -84,6 +76,16 @@ export default {
         .value();
     },
   },
+  mounted() {
+    if (typeof window !== 'undefined') {
+      const match = window.location.hash.match(/[#&?]id=(.+?)(?:[&]|$)/i);
+      if (match && match.length > 1) {
+        // eslint-disable-next-line prefer-destructuring
+        this.articleId = match[1];
+        console.log('article id =', this.articleId);
+      }
+    }
+  },
   methods: {
     updateVote({ post, vote }) {
       const newPosts = cloneDeep(this.posts);
@@ -115,16 +117,23 @@ body {
   margin: 0;
   padding: 0;
   font-size: 18px;
+  background: transparent;
 }
 
 body {
   font-size: 1rem;
-  overflow-y: scroll;
+  overflow: hidden;
 }
 
 .container {
   max-width: 960px;
-  padding: 1.5rem;
+  padding: $container-padding;
   margin: 0 auto;
+  height: 100vh;
+  overflow: hidden;
+
+  @media (max-width: 575.98px) {
+    padding: 0;
+  }
 }
 </style>

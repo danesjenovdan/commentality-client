@@ -1,8 +1,6 @@
 <template>
   <div class="wrapper">
-    <h3
-      class="instructions"
-    >
+    <h3 class="instructions">
       <transition
         name="fade"
         mode="out-in"
@@ -68,6 +66,9 @@ export default {
         : 'Za ogled javnega mnenja se opredeli do naslednjih trditev';
     },
   },
+  mounted() {
+
+  },
 };
 </script>
 
@@ -83,27 +84,37 @@ export default {
 }
 
 .scroll-container {
-  height: 600px;
   overflow-y: scroll;
   margin-left: -$wrapper-padding;
   margin-right: -$wrapper-padding;
   padding: 0 $wrapper-padding;
+  flex: 1 1 auto;
 }
 
 .wrapper {
-  padding: 0 $wrapper-padding $wrapper-padding $wrapper-padding;
+  padding: 0 $wrapper-padding;
   border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.1);
   font-family: $font-family;
+  background: $bg-color;
+  height: calc(100vh - #{$container-padding * 2});
+  display: flex;
+  flex-direction: column;
 
   .instructions {
     text-align: center;
     font-style: italic;
     font-weight: 800;
     border-bottom: 2px solid $primary-color;
-    margin-left: -$wrapper-padding;
-    margin-right: -$wrapper-padding;
+    margin: 0 #{-$wrapper-padding};
     padding: $wrapper-padding;
   }
+}
+
+footer {
+  $pad: $wrapper-padding / 2;
+  padding: $pad;
+  margin: 0 #{-$wrapper-padding};
+  border-top: 2px solid $primary-color;
 }
 </style>

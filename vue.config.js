@@ -9,4 +9,8 @@ module.exports = {
       },
     },
   },
+  pages: {
+    index: 'src/app.js',
+    embed: 'src/embed.js',
+  },
 };
