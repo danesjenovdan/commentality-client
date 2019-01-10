@@ -50,6 +50,11 @@ export default {
   border-radius: 12px;
   position: relative;
 
+  @media (max-width: 575.98px) {
+    margin: 0.75rem 0;
+    padding: 1rem;
+  }
+
   &::before,
   &::after {
     content: '“';
@@ -61,6 +66,12 @@ export default {
     font-weight: 800;
     line-height: 1;
     color: $secondary-color;
+
+    @media (max-width: 575.98px) {
+      font-size: 5rem;
+      top: 0.5rem;
+      left: -1.5rem;
+    }
   }
 
   &::after {
@@ -70,6 +81,11 @@ export default {
     right: -3.2rem;
     transform-origin: center;
     transform: rotate(180deg);
+
+    @media (max-width: 575.98px) {
+      bottom: 0.5rem;
+      right: -1.5rem;
+    }
   }
 
   .text {
@@ -77,14 +93,27 @@ export default {
     padding: 3rem;
     font-size: 1.65rem;
     font-weight: 200;
+
+    @media (max-width: 575.98px) {
+      padding: 0 0 1rem 0;
+      font-size: 1.25rem;
+    }
   }
 
   .buttons {
     display: flex;
 
+    @media (max-width: 575.98px) {
+      flex-direction: column;
+    }
+
     .button {
       flex: 1;
       margin: 0 6px;
+
+      @media (max-width: 575.98px) {
+        margin-bottom: 5px;
+      }
 
       &:focus {
         outline: none;

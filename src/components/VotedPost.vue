@@ -127,6 +127,11 @@ export default {
     font-size: 1.65rem;
     font-weight: 200;
     border-radius: 12px;
+
+    @media (max-width: 575.98px) {
+      padding: 1rem;
+      font-size: 1.25rem;
+    }
   }
 }
 </style>

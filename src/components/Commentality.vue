@@ -101,6 +101,10 @@ export default {
   display: flex;
   flex-direction: column;
 
+  @media (max-width: 575.98px) {
+    height: 100vh;
+  }
+
   .instructions {
     text-align: center;
     font-style: italic;
@@ -108,6 +112,12 @@ export default {
     border-bottom: 2px solid $primary-color;
     margin: 0 #{-$wrapper-padding};
     padding: $wrapper-padding;
+    flex: 0 0 auto;
+
+    @media (max-width: 575.98px) {
+      padding: $wrapper-padding / 2;
+      font-size: 1rem;
+    }
   }
 }
 
@@ -116,5 +126,10 @@ footer {
   padding: $pad;
   margin: 0 #{-$wrapper-padding};
   border-top: 2px solid $primary-color;
+  flex: 0 0 auto;
+
+  @media (max-width: 575.98px) {
+    padding: $pad / 2;
+  }
 }
 </style>
