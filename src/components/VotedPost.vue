@@ -31,8 +31,8 @@
 <script>
 const keyToLabelMap = {
   yes: 'strinjanje',
-  no: 'nestrinjanje',
   meh: 'neopredeljenost',
+  no: 'nestrinjanje',
 };
 
 export default {
@@ -54,8 +54,8 @@ export default {
     chartPortions() {
       return {
         yes: this.votes.yes / this.allVotes * 100,
-        no: this.votes.no / this.allVotes * 100,
         meh: this.votes.meh / this.allVotes * 100,
+        no: this.votes.no / this.allVotes * 100,
       };
     },
   },

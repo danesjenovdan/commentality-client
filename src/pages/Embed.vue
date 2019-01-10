@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       articleId: null,
-      currentSortCriterion: null,
+      currentSortCriterion: 'yes',
       posts: [
         {
           text: 'Šiško je neonacist in prav je, da je v zaporu.',
