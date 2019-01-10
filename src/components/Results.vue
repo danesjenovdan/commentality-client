@@ -77,17 +77,22 @@ export default {
     text-align: center;
     margin: $wrapper-padding 0;
 
+    @media (max-width: 575.98px) {
+      font-size: 0.75rem;
+    }
+
     .label {
       margin-right: 0.4rem;
     }
 
     .option {
+      padding: 0;
       cursor: pointer;
       text-transform: uppercase;
       border: none;
       background: transparent;
       font-family: $font-family;
-      font-size: 1rem;
+      font-size: 1em;
       font-weight: 800;
       font-style: italic;
 
@@ -107,7 +112,11 @@ export default {
     }
 
     .divider {
-      margin: 0 0.4rem;
+      margin: 0 0.4em;
+
+      @media (max-width: 575.98px) {
+        font-size: 0.75rem;
+      }
     }
   }
 }

@@ -84,11 +84,16 @@ export default {
 }
 
 .scroll-container {
+  overflow-x: hidden;
   overflow-y: scroll;
   margin-left: -$wrapper-padding;
   margin-right: -$wrapper-padding;
   padding: 0 $wrapper-padding;
   flex: 1 1 auto;
+
+  @media (max-width: 575.98px) {
+    padding: 0 #{$wrapper-padding / 2};
+  }
 }
 
 .wrapper {
