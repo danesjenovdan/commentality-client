@@ -49,13 +49,13 @@ export default {
   },
   computed: {
     allVotes() {
-      return this.votes.yes + this.votes.meh + this.votes.no;
+      return this.votes.like + this.votes.dislike + this.votes.meh;
     },
     chartPortions() {
       return {
-        yes: this.votes.yes / this.allVotes * 100,
+        yes: this.votes.like / this.allVotes * 100,
         meh: this.votes.meh / this.allVotes * 100,
-        no: this.votes.no / this.allVotes * 100,
+        no: this.votes.dislike / this.allVotes * 100,
       };
     },
   },

@@ -17,16 +17,16 @@ export const login = (email, password) => new Promise(
     .catch(error => reject(error.response.data)),
 );
 
-export const postComment = contents => new Promise(
+export const getArticle = articleId => new Promise(
   (resolve, reject) => axiosInstance
-    .post('/comments/', { contents })
+    .get(`/articles/${articleId}`)
     .then(response => resolve(response.data))
     .catch(error => reject(error.response.data)),
 );
 
-export const getComments = () => new Promise(
+export const postComment = contents => new Promise(
   (resolve, reject) => axiosInstance
-    .get('/comments/')
+    .post('/comments/', { contents })
     .then(response => resolve(response.data))
     .catch(error => reject(error.response.data)),
 );

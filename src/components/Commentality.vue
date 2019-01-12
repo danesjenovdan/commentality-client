@@ -34,9 +34,12 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import Results from './Results.vue';
 import Voting from './Voting.vue';
 import CFooter from './CFooter.vue';
+import { getArticle } from '../requests';
+
 
 export default {
   name: 'Commentality',
@@ -45,9 +48,14 @@ export default {
     Voting,
     CFooter,
   },
+  data() {
+    return {
+      rawPosts: [],
+    };
+  },
   props: {
-    posts: {
-      type: Array,
+    articleId: {
+      type: String,
       required: true,
     },
     currentSortCriterion: {
@@ -65,9 +73,24 @@ export default {
         ? 'Javno mnenje'
         : 'Za ogled javnega mnenja se opredeli do naslednjih trditev';
     },
+    posts() {
+      return this.rawPosts.map(post => ({
+        text: post.contents,
+        votes: post.vote_count,
+        voted: false,
+      }));
+    },
   },
-  mounted() {
-
+  async created() {
+    await this.login();
+    this.fetchPosts();
+  },
+  methods: {
+    ...mapActions(['login']),
+    async fetchPosts() {
+      const article = await getArticle(this.articleId);
+      this.rawPosts = article.comments;
+    },
   },
 };
 </script>

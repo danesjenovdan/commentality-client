@@ -26,7 +26,7 @@
     <voted-post
       v-for="(post, index) in posts"
       :key="index"
-      :text="post.text"
+      :text="post.contents"
       :votes="post.votes"
     />
   </div>

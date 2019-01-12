@@ -69,7 +69,7 @@ export default {
       return chain(this.posts)
         .cloneDeep()
         .sortBy((post) => {
-          const allVotes = post.votes.yes + post.votes.meh + post.votes.no;
+          const allVotes = post.votes.like + post.votes.meh + post.votes.dislike;
           return post.votes[this.currentSortCriterion] / allVotes;
         })
         .reverse()

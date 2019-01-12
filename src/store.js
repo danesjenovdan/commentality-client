@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { setJwtToken } from './requests';
+import { login, setJwtToken } from './requests';
 
 Vue.use(Vuex);
 
@@ -19,10 +19,22 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    login({ commit }, jwt) {
-      commit('SET_JWT', jwt);
-      setJwtToken(jwt);
-      commit('SET_AUTHENTICATED', true);
+    login({ commit }) {
+      return new Promise(async (resolve, reject) => {
+        const username = window.localStorage.getItem('commentalityUser');
+        const password = window.localStorage.getItem('commentalityPass');
+
+        try {
+          const jwt = await login(username, password);
+          commit('SET_JWT', jwt);
+          setJwtToken(jwt);
+          commit('SET_AUTHENTICATED', true);
+          resolve();
+        } catch (error) {
+          console.log(error);
+          reject();
+        }
+      });
     },
   },
   getters: {
@@ -30,3 +42,4 @@ export default new Vuex.Store({
     jwt: state => state.jwt,
   },
 });
+

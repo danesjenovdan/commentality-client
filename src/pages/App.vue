@@ -5,6 +5,7 @@
   >
     <fake-article />
     <commentality
+      article-id="mladina-random-id-12345"
       :posts="sortedPosts"
       :current-sort-criterion="currentSortCriterion"
       @vote="updateVote"
@@ -34,35 +35,6 @@ export default {
   data() {
     return {
       currentSortCriterion: null,
-      posts: [
-        {
-          text: 'Šiško je neonacist in prav je, da je v zaporu.',
-          voted: false,
-          votes: {
-            yes: 12,
-            meh: 34,
-            no: 56,
-          },
-        },
-        {
-          text: 'Sodniki so Soroševi plačanci.',
-          voted: false,
-          votes: {
-            yes: 78,
-            meh: 2,
-            no: 3,
-          },
-        },
-        {
-          text: 'Jaz sem s Ptuja in Štajerska varda je edina vojska, ki jo priznavam.',
-          voted: false,
-          votes: {
-            yes: 45,
-            meh: 67,
-            no: 89,
-          },
-        },
-      ],
     };
   },
   computed: {
@@ -77,7 +49,7 @@ export default {
       return chain(this.posts)
         .cloneDeep()
         .sortBy((post) => {
-          const allVotes = post.votes.yes + post.votes.meh + post.votes.no;
+          const allVotes = post.votes.like + post.votes.meh + post.votes.dislike;
           return post.votes[this.currentSortCriterion] / allVotes;
         })
         .reverse()
