@@ -1,5 +1,5 @@
 <template>
-  <div class="post">
+  <div class="comment">
     <div class="chart">
       <div class="labels">
         <div
@@ -30,13 +30,13 @@
 
 <script>
 const keyToLabelMap = {
-  yes: 'strinjanje',
+  like: 'strinjanje',
   meh: 'neopredeljenost',
-  no: 'nestrinjanje',
+  dislike: 'nestrinjanje',
 };
 
 export default {
-  name: 'VotedPost',
+  name: 'VotedComment',
   props: {
     text: {
       type: String,
@@ -53,9 +53,9 @@ export default {
     },
     chartPortions() {
       return {
-        yes: this.votes.like / this.allVotes * 100,
+        like: this.votes.like / this.allVotes * 100,
         meh: this.votes.meh / this.allVotes * 100,
-        no: this.votes.dislike / this.allVotes * 100,
+        dislike: this.votes.dislike / this.allVotes * 100,
       };
     },
   },
@@ -68,7 +68,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.post {
+.comment {
   border: 1px solid $border-color;
   margin: 1rem 0;
   padding: 1rem;

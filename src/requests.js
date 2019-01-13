@@ -13,7 +13,14 @@ export const setJwtToken = (token) => {
 export const login = (email, password) => new Promise(
   (resolve, reject) => axiosInstance
     .post('/users/login', { email, password })
-    .then(response => resolve(response.data.jwt_token))
+    .then(response => resolve(response.data))
+    .catch(error => reject(error.response.data)),
+);
+
+export const register = (email, password) => new Promise(
+  (resolve, reject) => axiosInstance
+    .post('/users/', { email, password, name: email })
+    .then(response => resolve(response.data))
     .catch(error => reject(error.response.data)),
 );
 
@@ -24,9 +31,21 @@ export const getArticle = articleId => new Promise(
     .catch(error => reject(error.response.data)),
 );
 
-export const postComment = contents => new Promise(
+export const postComment = (articleId, text) => new Promise(
   (resolve, reject) => axiosInstance
-    .post('/comments/', { contents })
+    .post('/comments/', {
+      contents: text,
+      article_external_id: articleId,
+    })
     .then(response => resolve(response.data))
     .catch(error => reject(error.response.data)),
 );
+
+export const voteOnComment = (uid, type) => new Promise(
+  (resolve, reject) => axiosInstance
+    .post(`/comments/vote/${uid}`, { type })
+    .then(response => resolve(response.data))
+    .catch(error => reject(error.response.data)),
+);
+
+window.addComment = postComment;

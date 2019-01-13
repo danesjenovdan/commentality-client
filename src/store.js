@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { random } from 'lodash';
 
-import { login, setJwtToken } from './requests';
+import { login, register, setJwtToken } from './requests';
 
 Vue.use(Vuex);
 
@@ -9,6 +10,7 @@ export default new Vuex.Store({
   state: {
     authenticated: false,
     jwt: null,
+    userId: null,
   },
   mutations: {
     SET_AUTHENTICATED(state, newState) {
@@ -17,17 +19,34 @@ export default new Vuex.Store({
     SET_JWT(state, newJwt) {
       state.jwt = newJwt;
     },
+    SET_USER_ID(state, newUserId) {
+      state.userId = newUserId;
+    },
   },
   actions: {
     login({ commit }) {
       return new Promise(async (resolve, reject) => {
-        const username = window.localStorage.getItem('commentalityUser');
-        const password = window.localStorage.getItem('commentalityPass');
+        let username;
+        let password;
+        let newUser = false;
+
+        username = window.localStorage.getItem('commentalityUser');
+        password = window.localStorage.getItem('commentalityPass');
+
+        if (username === null || password === null) {
+          password = String(random(Number.MAX_SAFE_INTEGER));
+          username = `${password}@commentality.test`;
+          window.localStorage.setItem('commentalityUser', username);
+          window.localStorage.setItem('commentalityPass', password);
+          newUser = true;
+        }
 
         try {
-          const jwt = await login(username, password);
-          commit('SET_JWT', jwt);
-          setJwtToken(jwt);
+          const method = newUser ? register : login;
+          const response = await method(username, password);
+          commit('SET_JWT', response.jwt_token);
+          commit('SET_USER_ID', response.uid);
+          setJwtToken(response.jwt_token);
           commit('SET_AUTHENTICATED', true);
           resolve();
         } catch (error) {
@@ -40,6 +59,7 @@ export default new Vuex.Store({
   getters: {
     authenticated: state => state.authenticated,
     jwt: state => state.jwt,
+    userId: state => state.userId,
   },
 });
 

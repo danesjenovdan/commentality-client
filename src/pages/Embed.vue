@@ -4,17 +4,13 @@
     class="container"
   >
     <commentality
-      :posts="sortedPosts"
-      :current-sort-criterion="currentSortCriterion"
-      @vote="updateVote"
-      @sort="updateSort"
+      v-if="articleId"
+      :article-id="articleId"
     />
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { chain, cloneDeep, find } from 'lodash';
 import Commentality from '../components/Commentality.vue';
 
 export default {
@@ -25,56 +21,9 @@ export default {
   data() {
     return {
       articleId: null,
-      currentSortCriterion: 'yes',
-      posts: [
-        {
-          text: 'Šiško je neonacist in prav je, da je v zaporu.',
-          voted: false,
-          votes: {
-            yes: 12,
-            meh: 34,
-            no: 56,
-          },
-        },
-        {
-          text: 'Sodniki so Soroševi plačanci.',
-          voted: false,
-          votes: {
-            yes: 78,
-            meh: 2,
-            no: 3,
-          },
-        },
-        {
-          text: 'Jaz sem s Ptuja in Štajerska varda je edina vojska, ki jo priznavam.',
-          voted: false,
-          votes: {
-            yes: 45,
-            meh: 67,
-            no: 89,
-          },
-        },
-      ],
     };
   },
   computed: {
-    ...mapGetters([
-      'authenticated',
-    ]),
-    sortedPosts() {
-      if (this.currentSortCriterion === null) {
-        return this.posts;
-      }
-
-      return chain(this.posts)
-        .cloneDeep()
-        .sortBy((post) => {
-          const allVotes = post.votes.like + post.votes.meh + post.votes.dislike;
-          return post.votes[this.currentSortCriterion] / allVotes;
-        })
-        .reverse()
-        .value();
-    },
   },
   mounted() {
     if (typeof window !== 'undefined') {
@@ -85,18 +34,6 @@ export default {
         console.log('article id =', this.articleId);
       }
     }
-  },
-  methods: {
-    updateVote({ post, vote }) {
-      const newPosts = cloneDeep(this.posts);
-      const newPost = find(newPosts, p => p.text === post.text);
-      newPost.voted = true;
-      newPost.votes[vote] += 1;
-      this.posts = newPosts;
-    },
-    updateSort(newSortCriterion) {
-      this.currentSortCriterion = newSortCriterion;
-    },
   },
 };
 </script>

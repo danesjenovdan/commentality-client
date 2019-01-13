@@ -1,30 +1,30 @@
 <template>
   <div class="voting">
     <transition
-      v-for="post in posts"
-      :key="post.text"
+      v-for="comment in comments"
+      :key="comment.text"
       name="slide-fade"
     >
-      <unvoted-post
-        v-if="!post.voted"
-        :key="post.text"
-        :post="post"
-        @vote="$emit('vote', $event)"
+      <unvoted-comment
+        v-if="!comment.voted"
+        :key="comment.text"
+        :comment="comment"
+        @vote="$emit('vote', {uid: comment.uid, type: $event})"
       />
     </transition>
   </div>
 </template>
 
 <script>
-import UnvotedPost from './UnvotedPost.vue';
+import UnvotedComment from './UnvotedComment.vue';
 
 export default {
   name: 'Voting',
   components: {
-    UnvotedPost,
+    UnvotedComment,
   },
   props: {
-    posts: {
+    comments: {
       type: Array,
       required: true,
     },

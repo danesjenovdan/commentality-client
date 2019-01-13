@@ -23,25 +23,25 @@
         />
       </template>
     </div>
-    <voted-post
-      v-for="(post, index) in posts"
+    <voted-comment
+      v-for="(comment, index) in comments"
       :key="index"
-      :text="post.contents"
-      :votes="post.votes"
+      :text="comment.text"
+      :votes="comment.votes"
     />
   </div>
 </template>
 
 <script>
-import VotedPost from './VotedPost.vue';
+import VotedComment from './VotedComment.vue';
 
 export default {
   name: 'Results',
   components: {
-    VotedPost,
+    VotedComment,
   },
   props: {
-    posts: {
+    comments: {
       type: Array,
       required: true,
     },
@@ -54,11 +54,11 @@ export default {
     return {
       sortCriteria: [
         {
-          key: 'yes',
+          key: 'like',
           label: 'Strinjanje',
         },
         {
-          key: 'no',
+          key: 'dislike',
           label: 'Nestrinjanje',
         },
         {

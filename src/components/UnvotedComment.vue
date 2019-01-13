@@ -1,24 +1,24 @@
 <template>
-  <div class="post">
+  <div class="comment">
     <p
       class="text"
-      v-text="post.text"
+      v-text="comment.text"
     />
     <div class="buttons">
       <c-button
         text="Se strinjam"
-        icon="yes"
-        @click.native="$emit('vote', { post, vote: 'yes' })"
+        icon="like"
+        @click.native="$emit('vote', 'like')"
       />
       <c-button
         text="Ne znam se opredeliti"
         icon="meh"
-        @click.native="$emit('vote', { post, vote: 'meh' })"
+        @click.native="$emit('vote', 'meh')"
       />
       <c-button
         text="Se ne strinjam"
-        icon="no"
-        @click.native="$emit('vote', { post, vote: 'no' })"
+        icon="dislike"
+        @click.native="$emit('vote', 'dislike')"
       />
     </div>
   </div>
@@ -28,12 +28,12 @@
 import CButton from './CButton.vue';
 
 export default {
-  name: 'UnvotedPost',
+  name: 'UnvotedComment',
   components: {
     CButton,
   },
   props: {
-    post: {
+    comment: {
       type: Object,
       required: true,
     },
@@ -42,7 +42,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.post {
+.comment {
   margin: 1rem 3rem;
   padding: 0 2rem 3rem 2rem;
   text-align: center;

@@ -18,15 +18,15 @@
       <results
         v-if="finishedVoting"
         class="scroll-container"
-        :posts="posts"
+        :comments="comments"
         :current-sort-criterion="currentSortCriterion"
-        @sort="$emit('sort', $event)"
+        @sort="updateSort"
       />
       <voting
         v-else
         class="scroll-container"
-        :posts="posts"
-        @vote="$emit('vote', $event)"
+        :comments="comments"
+        @vote="sendVote"
       />
     </transition>
     <c-footer />
@@ -34,11 +34,15 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
+import {
+  chain, cloneDeep, concat, findIndex, includes, mapValues, sum, values,
+} from 'lodash';
+
 import Results from './Results.vue';
 import Voting from './Voting.vue';
 import CFooter from './CFooter.vue';
-import { getArticle } from '../requests';
+import { getArticle, voteOnComment } from '../requests';
 
 
 export default {
@@ -48,24 +52,22 @@ export default {
     Voting,
     CFooter,
   },
-  data() {
-    return {
-      rawPosts: [],
-    };
-  },
   props: {
     articleId: {
       type: String,
       required: true,
     },
-    currentSortCriterion: {
-      type: String,
-      default: '',
-    },
+  },
+  data() {
+    return {
+      rawComments: [],
+      currentSortCriterion: null,
+    };
   },
   computed: {
+    ...mapGetters(['userId']),
     finishedVoting() {
-      const unvoted = this.posts.filter(post => !post.voted);
+      const unvoted = this.comments.filter(comment => !comment.voted);
       return unvoted.length === 0;
     },
     title() {
@@ -73,23 +75,62 @@ export default {
         ? 'Javno mnenje'
         : 'Za ogled javnega mnenja se opredeli do naslednjih trditev';
     },
-    posts() {
-      return this.rawPosts.map(post => ({
-        text: post.contents,
-        votes: post.vote_count,
-        voted: false,
+    comments() {
+      let comments = this.rawComments;
+
+      if (this.currentSortCriterion !== null) {
+        comments = chain(comments)
+          .cloneDeep()
+          .sortBy((comment) => {
+            const voteCounts = mapValues(
+              comment.votes,
+              vote => vote.length,
+            );
+            const allVotes = sum(values(voteCounts));
+            return voteCounts[this.currentSortCriterion] / allVotes;
+          })
+          .reverse()
+          .value();
+      }
+
+      return comments.map(comment => ({
+        text: comment.contents,
+        votes: {
+          like: comment.votes.like.length,
+          meh: comment.votes.meh.length,
+          dislike: comment.votes.dislike.length,
+        },
+        voted: includes(
+          concat(...values(comment.votes)),
+          this.userId,
+        ),
+        uid: comment.uid,
       }));
     },
   },
   async created() {
     await this.login();
-    this.fetchPosts();
+    this.fetchcomments();
   },
   methods: {
     ...mapActions(['login']),
-    async fetchPosts() {
+    async fetchcomments() {
       const article = await getArticle(this.articleId);
-      this.rawPosts = article.comments;
+      this.rawComments = article.comments;
+    },
+    async sendVote({ uid, type }) {
+      const updatedComment = await voteOnComment(uid, type);
+      const newComments = cloneDeep(this.rawComments);
+      const updatedCommentIndex = findIndex(
+        newComments,
+        { uid: updatedComment.uid },
+      );
+
+      newComments[updatedCommentIndex] = updatedComment;
+      this.rawComments = newComments;
+    },
+    updateSort(newSortCriterion) {
+      this.currentSortCriterion = newSortCriterion;
     },
   },
 };

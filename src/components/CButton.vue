@@ -52,8 +52,8 @@ export default {
     background-position: center;
   }
 
-  &.icon-yes {
-    $color: map-get($criteria-colors, "yes");
+  &.icon-like {
+    $color: map-get($criteria-colors, "like");
     // border-color: $color;
 
     .icon {
@@ -70,8 +70,8 @@ export default {
     }
   }
 
-  &.icon-no {
-    $color: map-get($criteria-colors, "no");
+  &.icon-dislike {
+    $color: map-get($criteria-colors, "dislike");
     // border-color: $color;
 
     .icon {
