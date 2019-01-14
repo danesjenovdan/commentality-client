@@ -8,7 +8,7 @@
           :class="['portion-label', name]"
           :style="`flex-basis: ${portion}%`"
         >
-          <strong v-text="`${Math.round(portion)} %`" />
+          <strong v-text="`${portion} %`" />
           <span v-text="$t(`result-labels.${name}`)" />
         </div>
       </div>
@@ -46,11 +46,20 @@ export default {
       return this.votes.like + this.votes.dislike + this.votes.meh;
     },
     chartPortions() {
-      return {
-        like: this.votes.like / this.allVotes * 100,
-        meh: this.votes.meh / this.allVotes * 100,
-        dislike: this.votes.dislike / this.allVotes * 100,
-      };
+      const portions = {};
+      const like = Math.round(this.votes.like / this.allVotes * 100);
+      if (like > 0) {
+        portions.like = like;
+      }
+      const meh = Math.round(this.votes.meh / this.allVotes * 100);
+      if (meh > 0) {
+        portions.meh = meh;
+      }
+      const dislike = Math.round(this.votes.dislike / this.allVotes * 100);
+      if (dislike > 0) {
+        portions.dislike = dislike;
+      }
+      return portions;
     },
   },
 };

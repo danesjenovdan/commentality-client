@@ -8,8 +8,8 @@
   },
   "sort": {
     "sort-by": "Sort by",
-    "like": "Consensus",
-    "dislike": "Discord",
+    "like": "Agreeability",
+    "dislike": "Disagreeability",
     "meh": "No opinion"
   },
   "result-labels": {
