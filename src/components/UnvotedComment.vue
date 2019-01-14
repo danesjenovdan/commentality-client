@@ -111,7 +111,7 @@ export default {
       flex: 1;
       margin: 0 6px;
 
-      @media (max-width: 575.98px) {
+      @media (max-width: 767.98px) {
         margin-bottom: 5px;
       }
 
