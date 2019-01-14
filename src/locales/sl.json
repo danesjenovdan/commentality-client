@@ -1,3 +1,20 @@
 {
-  "message": "hello i18n !!"
+  "public-opinion": "Javno mnenje",
+  "please-vote-to-see-opinion": "Za ogled javnega mnenja se opredeli do naslednjih trditev",
+  "choices": {
+    "like": "Se strinjam",
+    "dislike": "Se ne strinjam",
+    "meh": "Ne znam se opredeliti"
+  },
+  "sort": {
+    "sort-by": "Razvrsti glede na",
+    "like": "Strinjanje",
+    "dislike": "Nestrinjanje",
+    "meh": "Neopredeljenost"
+  },
+  "result-labels": {
+    "like": "strinjanje",
+    "dislike": "nestrinjanje",
+    "meh": "neopredeljenost"
+  }
 }

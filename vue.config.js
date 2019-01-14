@@ -12,6 +12,7 @@ module.exports = {
   pages: {
     index: 'src/app.js',
     embed: 'src/embed.js',
+    embed_en: 'src/embed_en.js',
   },
   pluginOptions: {
     i18n: {

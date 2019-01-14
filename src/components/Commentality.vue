@@ -72,8 +72,8 @@ export default {
     },
     title() {
       return this.finishedVoting
-        ? 'Javno mnenje'
-        : 'Za ogled javnega mnenja se opredeli do naslednjih trditev';
+        ? this.$t('public-opinion')
+        : this.$t('please-vote-to-see-opinion');
     },
     comments() {
       let comments = this.rawComments;

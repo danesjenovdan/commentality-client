@@ -1,0 +1,20 @@
+{
+  "public-opinion": "Public opinion",
+  "please-vote-to-see-opinion": "Take a stance on all of the statements below",
+  "choices": {
+    "like": "I agree",
+    "dislike": "I disagree",
+    "meh": "I have no opinion"
+  },
+  "sort": {
+    "sort-by": "Sort by",
+    "like": "Consensus",
+    "dislike": "Discord",
+    "meh": "No opinion"
+  },
+  "result-labels": {
+    "like": "agree",
+    "dislike": "disagree",
+    "meh": "no opinion"
+  }
+}

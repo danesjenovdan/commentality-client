@@ -6,17 +6,17 @@
     />
     <div class="buttons">
       <c-button
-        text="Se strinjam"
+        :text="$t('choices.like')"
         icon="like"
         @click.native="$emit('vote', 'like')"
       />
       <c-button
-        text="Ne znam se opredeliti"
+        :text="$t('choices.meh')"
         icon="meh"
         @click.native="$emit('vote', 'meh')"
       />
       <c-button
-        text="Se ne strinjam"
+        :text="$t('choices.dislike')"
         icon="dislike"
         @click.native="$emit('vote', 'dislike')"
       />

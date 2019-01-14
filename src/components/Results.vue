@@ -1,9 +1,10 @@
 <template>
   <div class="results">
     <div class="sort">
-      <span class="label">
-        Razvrsti glede na
-      </span>
+      <span
+        v-t="'sort.sort-by'"
+        class="label"
+      />
       <template v-for="(criterion, i) in sortCriteria">
         <button
           :key="criterion.key"
@@ -55,15 +56,15 @@ export default {
       sortCriteria: [
         {
           key: 'like',
-          label: 'Strinjanje',
+          label: this.$t('sort.like'),
         },
         {
           key: 'dislike',
-          label: 'Nestrinjanje',
+          label: this.$t('sort.dislike'),
         },
         {
           key: 'meh',
-          label: 'Neopredeljenost',
+          label: this.$t('sort.meh'),
         },
       ],
     };

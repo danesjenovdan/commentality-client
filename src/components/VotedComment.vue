@@ -9,7 +9,7 @@
           :style="`flex-basis: ${portion}%`"
         >
           <strong v-text="`${Math.round(portion)} %`" />
-          <span v-text="keyToLabel(name)" />
+          <span v-text="$t(`result-labels.${name}`)" />
         </div>
       </div>
       <div class="bars">
@@ -29,12 +29,6 @@
 </template>
 
 <script>
-const keyToLabelMap = {
-  like: 'strinjanje',
-  meh: 'neopredeljenost',
-  dislike: 'nestrinjanje',
-};
-
 export default {
   name: 'VotedComment',
   props: {
@@ -57,11 +51,6 @@ export default {
         meh: this.votes.meh / this.allVotes * 100,
         dislike: this.votes.dislike / this.allVotes * 100,
       };
-    },
-  },
-  methods: {
-    keyToLabel(key) {
-      return keyToLabelMap[key] || key;
     },
   },
 };
