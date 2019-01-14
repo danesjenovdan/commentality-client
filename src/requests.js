@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://backmentality.djnd.si/api/v1';
+const baseURL = 'https://backmentality.djnd.si/api/v1';
 let axiosInstance = axios.create({ baseURL });
 
 export const setJwtToken = (token) => {
