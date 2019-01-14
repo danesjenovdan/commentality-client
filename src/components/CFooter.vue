@@ -2,7 +2,7 @@
   <footer>
     <div class="name">
       <a
-        href="https://djnd.si/"
+        href="https://commentality.djnd.si/"
         target="_blank"
       >
         Commentality
