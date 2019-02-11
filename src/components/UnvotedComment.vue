@@ -1,41 +1,71 @@
 <template>
   <div class="comment">
-    <p
-      class="text"
-      v-text="comment.text"
+    <login
+      v-if="authStep"
+      :authStep="authStep"
+      @codeRequested="authStep = 'verify'"
+      @authenticated="$emit('vote', tmpVote)"
     />
-    <div class="buttons">
-      <c-button
-        :text="$t('choices.like')"
-        icon="like"
-        @click.native="$emit('vote', 'like')"
+    <div v-if="!authStep">
+      <p
+        class="text"
+        v-text="comment.text"
       />
-      <c-button
-        :text="$t('choices.meh')"
-        icon="meh"
-        @click.native="$emit('vote', 'meh')"
-      />
-      <c-button
-        :text="$t('choices.dislike')"
-        icon="dislike"
-        @click.native="$emit('vote', 'dislike')"
-      />
+      <div class="buttons">
+        <c-button
+          :text="$t('choices.like')"
+          icon="like"
+          @click.native="tryToVote('like')"
+        />
+        <c-button
+          :text="$t('choices.meh')"
+          icon="meh"
+          @click.native="tryToVote('meh')"
+        />
+        <c-button
+          :text="$t('choices.dislike')"
+          icon="dislike"
+          @click.native="tryToVote('dislike')"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import Login from './Login.vue';
 import CButton from './CButton.vue';
 
 export default {
   name: 'UnvotedComment',
   components: {
     CButton,
+    Login,
+  },
+  data() {
+    return {
+      authStep: null,
+      tmpVote: null,
+    };
   },
   props: {
     comment: {
       type: Object,
       required: true,
+    },
+  },
+  computed: {
+    ...mapGetters(['userId', 'authenticated']),
+  },
+  methods: {
+    tryToVote(vote) {
+      if (this.authenticated) {
+        this.$emit('vote', vote);
+      } else {
+        this.authStep = 'begin';
+        this.tmpVote = vote;
+      }
     },
   },
 };

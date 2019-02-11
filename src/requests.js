@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'https://frontmentality.djnd.si/backend/api/v1';
+const baseURL = 'http://localhost:5000/api/v2';
 let axiosInstance = axios.create({ baseURL });
 
 export const setJwtToken = (token) => {
@@ -13,6 +13,20 @@ export const setJwtToken = (token) => {
 export const login = (email, password) => new Promise(
   (resolve, reject) => axiosInstance
     .post('/users/login', { email, password })
+    .then(response => resolve(response.data))
+    .catch(error => reject(error.response.data)),
+);
+
+export const getCode = number => new Promise(
+  (resolve, reject) => axiosInstance
+    .post('/users/', { number })
+    .then(response => resolve(response.data))
+    .catch(error => reject(error.response.data)),
+);
+
+export const verifyCode = (number, code) => new Promise(
+  (resolve, reject) => axiosInstance
+    .post('/users/verify', { number, code })
     .then(response => resolve(response.data))
     .catch(error => reject(error.response.data)),
 );

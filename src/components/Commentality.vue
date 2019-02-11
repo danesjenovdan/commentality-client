@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 import {
   chain, cloneDeep, concat, findIndex, includes, mapValues, sum, values,
 } from 'lodash';
@@ -42,7 +42,7 @@ import {
 import Results from './Results.vue';
 import Voting from './Voting.vue';
 import CFooter from './CFooter.vue';
-import { getArticle, voteOnComment } from '../requests';
+import { getArticle, voteOnComment, setJwtToken } from '../requests';
 
 
 export default {
@@ -109,14 +109,25 @@ export default {
     },
   },
   async created() {
-    await this.login();
     this.fetchcomments();
+
+    // check if logged in
+    const uid = window.localStorage.getItem('commentalityUID');
+    const token = window.localStorage.getItem('commentalityTOKEN');
+
+    if (uid && token) {
+      this.$store.commit('SET_JWT', token);
+      this.$store.commit('SET_USER_ID', uid);
+      setJwtToken(token);
+      this.$store.commit('SET_AUTHENTICATED', true);
+    }
   },
   methods: {
-    ...mapActions(['login']),
     async fetchcomments() {
+      console.log('fetching comments');
       const article = await getArticle(this.articleId);
       this.rawComments = article.comments;
+      console.log(article.comments);
     },
     async sendVote({ uid, type }) {
       const updatedComment = await voteOnComment(uid, type);
