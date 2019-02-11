@@ -1,28 +1,40 @@
 <template>
   <div class="comment">
-    <p
-      class="text"
-      v-text="comment.text"
+    <login
+      v-if="authStep"
+      :auth-step="authStep"
+      @codeRequested="authStep = 'verify'"
+      @authenticated="tryToVote(tmpVote)"
     />
-    <div class="options">
-      <div
-        v-for="action in actions"
-        :key="action"
-        :class="['option', action, (comment.voted ? 'chart' : 'button')]"
-        :style="getOptionStyle(action)"
-        @click="$emit('vote', action)"
-      >
-        <i class="icon" />
-        {{ $t(`choices.${action}`) }}
+    <div v-else>
+      <p
+        class="text"
+        v-text="comment.text"
+      />
+      <div class="options">
+        <div
+          v-for="action in actions"
+          :key="action"
+          :class="['option', action, (comment.voted ? 'chart' : 'button')]"
+          :style="getOptionStyle(action)"
+          @click="tryToVote(action)"
+        >
+          <i class="icon" />
+          {{ $t(`choices.${action}`) }}
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import Login from './Login.vue';
+
 export default {
   name: 'Comment',
   components: {
+    Login,
   },
   props: {
     comment: {
@@ -30,12 +42,30 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      authStep: null,
+      tmpVote: null,
+    };
+  },
+  computed: {
+    ...mapGetters(['userId', 'authenticated']),
+  },
   created() {
     this.actions = ['like', 'meh', 'dislike'];
   },
   methods: {
     getOptionStyle(action) {
       return this.comment.voted ? { flex: this.comment.votes[action] } : null;
+    },
+    tryToVote(vote) {
+      if (this.authenticated) {
+        this.$emit('vote', vote);
+        this.authStep = null;
+      } else {
+        this.authStep = 'begin';
+        this.tmpVote = vote;
+      }
     },
   },
 };
