@@ -117,10 +117,8 @@ export default {
   },
   methods: {
     async fetchcomments() {
-      console.log('fetching comments');
       const article = await getArticle(this.articleId);
       this.rawComments = article.comments;
-      console.log(article.comments);
     },
     async sendVote({ uid, type }) {
       const updatedComment = await voteOnComment(uid, type);
