@@ -15,18 +15,12 @@
       name="fade"
       mode="out-in"
     >
-      <results
-        v-if="finishedVoting"
+      <comments
         class="scroll-container"
         :comments="comments"
         :current-sort-criterion="currentSortCriterion"
-        @sort="updateSort"
-      />
-      <voting
-        v-else
-        class="scroll-container"
-        :comments="comments"
         @vote="sendVote"
+        @sort="updateSort"
       />
     </transition>
     <c-footer />
@@ -39,8 +33,8 @@ import {
   chain, cloneDeep, concat, findIndex, includes, mapValues, sum, values,
 } from 'lodash';
 
-import Results from './Results.vue';
-import Voting from './Voting.vue';
+// import Results from './Results.vue';
+import Comments from './Comments.vue';
 import CFooter from './CFooter.vue';
 import { getArticle, voteOnComment, setJwtToken } from '../requests';
 
@@ -48,8 +42,7 @@ import { getArticle, voteOnComment, setJwtToken } from '../requests';
 export default {
   name: 'Commentality',
   components: {
-    Results,
-    Voting,
+    Comments,
     CFooter,
   },
   props: {
