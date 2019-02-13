@@ -31,6 +31,13 @@ export const verifyCode = (number, code) => new Promise(
     .catch(error => reject(error.response.data)),
 );
 
+export const refreshToken = () => new Promise(
+  (resolve, reject) => axiosInstance
+    .post('/users/refresh', {})
+    .then(response => resolve(response.data))
+    .catch(error => reject(error.response.data)),
+);
+
 export const register = (email, password) => new Promise(
   (resolve, reject) => axiosInstance
     .post('/users/', { email, password, name: email })

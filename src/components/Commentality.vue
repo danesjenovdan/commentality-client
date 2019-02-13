@@ -36,7 +36,13 @@ import {
 // import Results from './Results.vue';
 import Comments from './Comments.vue';
 import CFooter from './CFooter.vue';
-import { getArticle, voteOnComment, setJwtToken } from '../requests';
+import {
+  getArticle,
+  voteOnComment,
+  setJwtToken,
+  verifyCode,
+  refreshToken,
+} from '../requests';
 
 
 export default {
@@ -109,10 +115,18 @@ export default {
     const token = window.localStorage.getItem('commentalityTOKEN');
 
     if (uid && token) {
-      this.$store.commit('SET_JWT', token);
-      this.$store.commit('SET_USER_ID', uid);
       setJwtToken(token);
-      this.$store.commit('SET_AUTHENTICATED', true);
+      refreshToken().then((data) => {
+        console.log('refreshed token');
+        console.log(data);
+        this.$store.commit('SET_JWT', data.jwt_token);
+        this.$store.commit('SET_USER_ID', data.uid);
+        setJwtToken(data.jwt_token);
+        this.$store.commit('SET_AUTHENTICATED', true);
+
+        window.localStorage.setItem('commentalityUID', data.uid);
+        window.localStorage.setItem('commentalityTOKEN', data.jwt_token);
+      });
     }
   },
   methods: {
