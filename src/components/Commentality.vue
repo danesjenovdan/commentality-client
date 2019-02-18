@@ -40,7 +40,6 @@ import {
   getArticle,
   voteOnComment,
   setJwtToken,
-  verifyCode,
   refreshToken,
 } from '../requests';
 
