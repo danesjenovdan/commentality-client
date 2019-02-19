@@ -58,6 +58,7 @@ export default {
   },
   data() {
     return {
+      article: {},
       rawComments: [],
       currentSortCriterion: null,
     };
@@ -99,39 +100,38 @@ export default {
           dislike: comment.votes.dislike.length,
         },
         voted: includes(
-          concat(...values(comment.votes)),
-          this.userId,
+          this.article.comments_voted_on,
+          comment.uid,
         ),
         uid: comment.uid,
       }));
     },
   },
   async created() {
-    this.fetchcomments();
-
     // check if logged in
     const uid = window.localStorage.getItem('commentalityUID');
     const token = window.localStorage.getItem('commentalityTOKEN');
 
     if (uid && token) {
       setJwtToken(token);
-      refreshToken().then((data) => {
-        console.log('refreshed token');
-        console.log(data);
-        this.$store.commit('SET_JWT', data.jwt_token);
-        this.$store.commit('SET_USER_ID', data.uid);
-        setJwtToken(data.jwt_token);
-        this.$store.commit('SET_AUTHENTICATED', true);
+      const data = await refreshToken();
+      console.log('refreshed token');
+      console.log(data);
+      this.$store.commit('SET_JWT', data.jwt_token);
+      this.$store.commit('SET_USER_ID', data.uid);
+      setJwtToken(data.jwt_token);
+      this.$store.commit('SET_AUTHENTICATED', true);
 
-        window.localStorage.setItem('commentalityUID', data.uid);
-        window.localStorage.setItem('commentalityTOKEN', data.jwt_token);
-      });
+      window.localStorage.setItem('commentalityUID', data.uid);
+      window.localStorage.setItem('commentalityTOKEN', data.jwt_token);
     }
+
+    this.fetchcomments();
   },
   methods: {
     async fetchcomments() {
-      const article = await getArticle(this.articleId);
-      this.rawComments = article.comments;
+      this.article = await getArticle(this.articleId);
+      this.rawComments = this.article.visible_comments;
     },
     async sendVote({ uid, type }) {
       const updatedComment = await voteOnComment(uid, type);
