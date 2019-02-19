@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { random } from 'lodash';
 
 Vue.use(Vuex);
 
