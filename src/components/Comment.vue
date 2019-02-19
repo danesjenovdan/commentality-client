@@ -148,17 +148,7 @@ export default {
       }
 
       &.button {
-        $height: 42px;
-
-        border-radius: $height / 2;
-        border-style: solid;
-        border-width: 3px;
-        color: $text-color;
         flex: 1;
-        font-family: $font-family;
-        font-size: 12px;
-        font-weight: bold;
-        height: $height;
 
         &:not(:last-child) { margin-right: 0.667rem; }
         &:focus { outline: none; }
