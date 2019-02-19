@@ -1,13 +1,36 @@
 <template>
   <div class="login">
-    <div class="step-begin" v-if="authStep == 'begin'">
-      <input type="text" name="phone" id="phone" placeholder="phone here" v-model="phone">
-      <input type="submit" value="SEND ME TEH CODE" @click="getCode">
+    <div
+      v-if="authStep === 'begin'"
+      class="step-begin"
+    >
+      Please enter your phone number to receive code.
+      <input
+        v-model="phoneNumber"
+        type="tel"
+        class="phone-number"
+        placeholder="+386 41 123 456"
+      >
+      <button
+        class="button"
+        @click="getCode">
+        Get the code
+      </button>
     </div>
-
-    <div class="step-verify" v-if="authStep == 'verify'">
-      <input type="text" name="code" id="code" placeholder="code here" v-model="code">
-      <input type="submit" value="SUBMIT TEH CODE" @click="submitCode">
+    <div
+      v-else-if="authStep === 'verify'"
+      class="step-verify"
+    >
+      Enter the code to see the results.
+      <input
+        v-model="code"
+        type="number"
+        name="code"
+        placeholder="123456"
+      >
+      <button @click="submitCode">
+        Enter
+      </button>
     </div>
   </div>
 </template>
@@ -18,6 +41,8 @@ import { getCode, verifyCode, setJwtToken } from '../requests';
 
 export default {
   name: 'Login',
+  components: {
+  },
   props: {
     authStep: {
       type: String,
@@ -26,20 +51,20 @@ export default {
   },
   data() {
     return {
-      phone: '',
+      phoneNumber: '',
       code: '',
     };
   },
   methods: {
     ...mapActions(['login']),
     getCode() {
-      getCode(this.phone).then((data) => {
-        alert(data.status);
+      getCode(this.phoneNumber).then((data) => {
+        console.log(data.status);
         this.$emit('codeRequested');
       });
     },
     submitCode() {
-      verifyCode(this.phone, this.code).then((data) => {
+      verifyCode(this.phoneNumber, this.code).then((data) => {
         console.log(data);
         this.$store.commit('SET_JWT', data.jwt_token);
         this.$store.commit('SET_USER_ID', data.uid);
@@ -60,4 +85,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.login {
+  font-size: 14px;
+
+  .phone-number {
+    width: 150px;
+    margin: 1.75rem 1rem 0;
+  }
+}
 </style>
