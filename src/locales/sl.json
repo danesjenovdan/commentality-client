@@ -1,6 +1,10 @@
 {
   "public-opinion": "Javno mnenje",
   "please-vote-to-see-opinion": "Za ogled javnega mnenja se opredeli do naslednjih trditev",
+  "enter-phone-for-code": "Vnesi telefonsko številko za prejem kode.",
+  "enter-code-for-results": "Vnesi kodo za prikaz rezultatov.",
+  "get-code": "Pridobi kodo",
+  "enter": "Vnesi",
   "choices": {
     "like": "Se strinjam",
     "dislike": "Se ne strinjam",

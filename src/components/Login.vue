@@ -7,7 +7,7 @@
       v-if="authStep === 'begin'"
       class="step-begin"
     >
-      Please enter your phone number to receive code.
+      {{ $t('enter-phone-for-code') }}
       <input
         v-model="phoneNumber"
         type="tel"
@@ -16,15 +16,16 @@
       >
       <button
         class="button"
-        @click="getCode">
-        Get the code
+        @click="getCode"
+      >
+        {{ $t('get-code') }}
       </button>
     </div>
     <div
       v-else-if="authStep === 'verify'"
       class="step-verify"
     >
-      Enter the code to see the results.
+      {{ $t('enter-code-for-results') }}
       <input
         v-model="code"
         type="number"
@@ -32,7 +33,7 @@
         placeholder="123456"
       >
       <button @click="submitCode">
-        Enter
+        {{ $t('enter') }}
       </button>
     </div>
   </div>

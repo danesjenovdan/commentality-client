@@ -1,6 +1,10 @@
 {
   "public-opinion": "Public opinion",
   "please-vote-to-see-opinion": "Take a stance on all of the statements below",
+  "enter-phone-for-code": "Please enter your phone number to receive code.",
+  "enter-code-for-results": "Enter the code to see the results.",
+  "get-code": "Get the code",
+  "enter": "Enter",
   "choices": {
     "like": "I agree",
     "dislike": "I disagree",
