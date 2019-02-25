@@ -1,5 +1,8 @@
 <template>
-  <div class="login">
+  <div
+    v-if="authStep"
+    class="login"
+  >
     <div
       v-if="authStep === 'begin'"
       class="step-begin"
@@ -36,30 +39,53 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { getCode, verifyCode, setJwtToken } from '../requests';
 
 export default {
   name: 'Login',
   components: {
   },
-  props: {
-    authStep: {
-      type: String,
-      default: 'begin',
-    },
-  },
   data() {
     return {
       phoneNumber: '',
       code: '',
+      authStep: 'begin',
     };
   },
+  computed: {
+    ...mapGetters([
+      'userId',
+      'authenticated',
+    ]),
+  },
+  // watch: {
+  //   authenticated(theNew, theOld) {
+  //     if (theNew) {
+  //       console.log('piiiiiing');
+  //     }
+  //     console.log(theNew, theOld);
+  //   },
+  // },
+  async created() {
+    await this.refreshOrComplain();
+
+    if (!this.authenticated) {
+      this.authStep = 'begin';
+      this.$emit('loginRequired');
+    } else {
+      this.$emit('authenticated');
+      console.log('authenticated');
+    }
+  },
   methods: {
-    ...mapActions(['login']),
+    ...mapActions([
+      'refreshOrComplain',
+    ]),
     getCode() {
       getCode(this.phoneNumber).then((data) => {
         console.log(data.status);
+        this.authStep = 'verify';
         this.$emit('codeRequested');
       });
     },
@@ -74,6 +100,7 @@ export default {
         window.localStorage.setItem('commentalityUID', data.uid);
         window.localStorage.setItem('commentalityTOKEN', data.jwt_token);
 
+        this.authStep = null;
         this.$emit('authenticated');
       });
     },

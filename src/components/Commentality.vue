@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import {
-  chain, cloneDeep, concat, findIndex, includes, mapValues, sum, values,
+  chain, cloneDeep, findIndex, includes, mapValues, sum, values,
 } from 'lodash';
 
 // import Results from './Results.vue';
@@ -39,8 +39,6 @@ import CFooter from './CFooter.vue';
 import {
   getArticle,
   voteOnComment,
-  setJwtToken,
-  refreshToken,
 } from '../requests';
 
 
@@ -108,24 +106,6 @@ export default {
     },
   },
   async created() {
-    // check if logged in
-    const uid = window.localStorage.getItem('commentalityUID');
-    const token = window.localStorage.getItem('commentalityTOKEN');
-
-    if (uid && token) {
-      setJwtToken(token);
-      const data = await refreshToken();
-      console.log('refreshed token');
-      console.log(data);
-      this.$store.commit('SET_JWT', data.jwt_token);
-      this.$store.commit('SET_USER_ID', data.uid);
-      setJwtToken(data.jwt_token);
-      this.$store.commit('SET_AUTHENTICATED', true);
-
-      window.localStorage.setItem('commentalityUID', data.uid);
-      window.localStorage.setItem('commentalityTOKEN', data.jwt_token);
-    }
-
     this.fetchcomments();
   },
   methods: {
