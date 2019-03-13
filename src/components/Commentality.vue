@@ -170,10 +170,11 @@ export default {
   }
 
   .instructions {
+    font-size: 0.8rem;
     text-align: center;
     font-style: italic;
     font-weight: 800;
-    border-bottom: 2px solid $primary-color;
+    border-bottom: 1px solid $primary-color;
     margin: 0 #{-$wrapper-padding};
     padding: $wrapper-padding;
     flex: 0 0 auto;

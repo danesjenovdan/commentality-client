@@ -6,7 +6,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-size: 18px;
+  font-size: 20px;
 }
 
 body {
@@ -39,19 +39,20 @@ input[type=number], input[type=tel] {
 }
 
 .button {
-  $height: 42px;
+  $height: 1.65rem;
 
-  background: none;
+  background: $bg-color;
   border-color: map-get($criteria-colors, "like");
   border-radius: $height / 2;
   border-style: solid;
-  border-width: 3px;
+  border-width: 1px;
   color: $text-color;
   cursor: pointer;
   font-family: $font-family;
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 0.6rem;
+  font-weight: 200;
   height: $height;
 
   &:focus { outline: none; }
+  &.with-icon { padding-left: 0.6rem; }
 }
