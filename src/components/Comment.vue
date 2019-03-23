@@ -1,11 +1,6 @@
 <template>
   <div class="comment">
-    <login
-      v-if="authStep"
-      :auth-step="authStep"
-      @codeRequested="authStep = 'verify'"
-      @authenticated="tryToVote(tmpVote)"
-    />
+    <login v-if="showLogin" />
     <div v-else>
       <p
         class="text"
@@ -17,7 +12,7 @@
           :key="action"
           :class="['option', action, (comment.voted ? 'chart' : 'button with-icon')]"
           :style="getOptionStyle(action)"
-          @click="tryToVote(action)"
+          @click="vote(action)"
         >
           {{ $t(`choices.${action}`) }}
         </div>
@@ -27,7 +22,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import Login from './Login.vue';
 
 export default {
@@ -43,27 +38,41 @@ export default {
   },
   data() {
     return {
-      authStep: null,
-      tmpVote: null,
+      triedVoting: false,
+      temporaryVote: null,
     };
   },
   computed: {
     ...mapGetters(['userId', 'authenticated']),
+    showLogin() {
+      return this.triedVoting && !this.authenticated;
+    },
+  },
+  watch: {
+    authenticated(newValue) {
+      if (this.temporaryVote && newValue === true) {
+        this.vote(this.temporaryVote);
+      }
+    },
   },
   created() {
-    this.actions = ['like', 'meh', 'dislike'];
+    this.actions = Object.freeze(['like', 'meh', 'dislike']);
   },
   methods: {
+    ...mapActions([
+      'startVerification',
+    ]),
     getOptionStyle(action) {
       return this.comment.voted ? { flex: this.comment.votes[action] } : null;
     },
-    tryToVote(vote) {
+    vote(vote) {
+      this.triedVoting = true;
+
       if (this.authenticated) {
         this.$emit('vote', vote);
-        this.authStep = null;
       } else {
-        this.authStep = 'begin';
-        this.tmpVote = vote;
+        this.temporaryVote = vote;
+        this.startVerification();
       }
     },
   },
@@ -130,9 +139,6 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all ease .5s;
-
-      &:hover { background-color: $bg-hover-color; }
 
       &.chart {
         height: 12px;

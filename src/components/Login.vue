@@ -1,10 +1,7 @@
 <template>
-  <div
-    v-if="authStep"
-    class="login"
-  >
+  <div class="login">
     <div
-      v-if="authStep === 'begin'"
+      v-if="step === 'number'"
       class="step-begin"
     >
       {{ $t('enter-phone-for-code') }}
@@ -16,12 +13,13 @@
       >
       <button
         class="button confirm"
+        @click="getCode(phoneNumber)"
       >
         {{ $t('get-code') }}
       </button>
     </div>
     <div
-      v-else-if="authStep === 'verify'"
+      v-else-if="step === 'token'"
       class="step-verify"
     >
       {{ $t('enter-code-for-results') }}
@@ -34,6 +32,7 @@
       >
       <button
         class="button confirm"
+        @click="submitCode({phoneNumber, code})"
       >
         {{ $t('enter') }}
       </button>
@@ -43,7 +42,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { getCode, verifyCode, setJwtToken } from '../requests';
+import { AuthStep } from '../store';
 
 export default {
   name: 'Login',
@@ -53,63 +52,29 @@ export default {
     return {
       phoneNumber: '',
       code: '',
-      authStep: 'begin',
     };
   },
   computed: {
     ...mapGetters([
       'userId',
-      'authenticated',
+      'authStep',
     ]),
+    step() {
+      return this.authStep === AuthStep.StartedVerification
+        ? 'number'
+        : 'token';
+    },
   },
-  // watch: {
-  //   authenticated(theNew, theOld) {
-  //     if (theNew) {
-  //       console.log('piiiiiing');
-  //     }
-  //     console.log(theNew, theOld);
-  //   },
-  // },
   async created() {
-    await this.refreshOrComplain();
-
-    if (!this.authenticated) {
-      this.authStep = 'begin';
-      this.$emit('loginRequired');
-    } else {
-      this.$emit('authenticated');
-      console.log('authenticated');
-    }
+    this.refreshOrComplain();
   },
   methods: {
     ...mapActions([
       'refreshOrComplain',
+      'storeAuthData',
+      'getCode',
+      'submitCode',
     ]),
-    getCode() {
-      getCode(this.phoneNumber).then((data) => {
-        console.log(data.status);
-        this.authStep = 'verify';
-        this.$emit('codeRequested');
-      });
-    },
-    submitCode() {
-      verifyCode(this.phoneNumber, this.code).then((data) => {
-        console.log(data);
-        this.$store.commit('SET_JWT', data.jwt_token);
-        this.$store.commit('SET_USER_ID', data.uid);
-        setJwtToken(data.jwt_token);
-        this.$store.commit('SET_AUTHENTICATED', true);
-
-        window.localStorage.setItem('commentalityUID', data.uid);
-        window.localStorage.setItem('commentalityTOKEN', data.jwt_token);
-
-        this.authStep = null;
-        this.$emit('authenticated');
-      });
-    },
-    isInt(s) {
-      return parseInt(s, 10);
-    },
   },
 };
 </script>

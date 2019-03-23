@@ -9,9 +9,7 @@
           class="row"
         >
           <div class="col-md-12">
-            <login
-              @authenticated="setPropertyId"
-            />
+            <login />
           </div>
         </div>
         <div
@@ -58,6 +56,13 @@ export default {
     ...mapGetters([
       'authenticated',
     ]),
+  },
+  watch: {
+    authenticated(newValue) {
+      if (newValue === true) {
+        this.setPropertyId();
+      }
+    },
   },
   methods: {
     setPropertyId() {

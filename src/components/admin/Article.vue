@@ -46,7 +46,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import CommentCreator from './CommentCreator.vue';
 import VisibilityToggle from './VisibilityToggle.vue';
 import { getArticle } from '../../requests';
@@ -67,11 +66,6 @@ export default {
     return {
       comments: [],
     };
-  },
-  computed: {
-    ...mapGetters([
-      'authenticated',
-    ]),
   },
   mounted() {
     this.getComments();

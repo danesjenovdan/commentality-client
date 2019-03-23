@@ -65,7 +65,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import ArticleCreator from './ArticleCreator.vue';
 import CommentingToggle from './CommentingToggle.vue';
 import VotingToggle from './VotingToggle.vue';
@@ -88,11 +87,6 @@ export default {
     return {
       articles: [],
     };
-  },
-  computed: {
-    ...mapGetters([
-      'authenticated',
-    ]),
   },
   watch: {
     propertyId(newValue, oldValue) {
