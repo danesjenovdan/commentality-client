@@ -35,7 +35,7 @@ export default new Vuex.Store({
     userId: state => state.userId,
   },
   actions: {
-    async refreshOrComplain({ dispatch }) {
+    async refreshJwtToken({ dispatch }) {
       // check if logged in
       const uid = window.localStorage.getItem('commentalityUID');
       const token = window.localStorage.getItem('commentalityTOKEN');

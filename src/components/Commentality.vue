@@ -41,7 +41,6 @@ import {
   voteOnComment,
 } from '../requests';
 
-
 export default {
   name: 'Commentality',
   components: {
@@ -106,10 +105,14 @@ export default {
     },
   },
   async created() {
-    this.fetchcomments();
+    await this.refreshJwtToken();
+    this.fetchComments();
   },
   methods: {
-    async fetchcomments() {
+    ...mapActions([
+      'refreshJwtToken',
+    ]),
+    async fetchComments() {
       this.article = await getArticle(this.articleId);
       this.rawComments = this.article.visible_comments;
     },

@@ -65,12 +65,8 @@ export default {
         : 'token';
     },
   },
-  async created() {
-    this.refreshOrComplain();
-  },
   methods: {
     ...mapActions([
-      'refreshOrComplain',
       'storeAuthData',
       'getCode',
       'submitCode',
