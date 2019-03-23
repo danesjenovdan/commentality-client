@@ -34,7 +34,7 @@ export default {
     async enableVoting() {
       if (!this.canVote) {
         await patchArticle(this.articleId, {
-          can_vote: true,
+          canVote: true,
         });
         this.$emit('votingEnabled');
       }
@@ -42,7 +42,7 @@ export default {
     async disableVoting() {
       if (this.canVote) {
         await patchArticle(this.articleId, {
-          can_vote: false,
+          canVote: false,
         });
         this.$emit('votingDisabled');
       }

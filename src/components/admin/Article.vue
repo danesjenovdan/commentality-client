@@ -73,7 +73,7 @@ export default {
   methods: {
     async getComments() {
       const article = await getArticle(this.articleId);
-      this.comments = article.visible_comments.concat(article.hidden_comments);
+      this.comments = article.visibleComments.concat(article.hiddenComments);
     },
   },
 };

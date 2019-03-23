@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { keysToCamel, keysToSnake } from './utils';
 
 const baseURL = 'http://localhost:5000/api/v2';
 let axiosInstance = axios.create({ baseURL });
@@ -42,7 +43,7 @@ export const register = (email, password) => axiosInstance
 
 export const getArticle = articleId => axiosInstance
   .get(`/articles/${articleId}`)
-  .then(response => response.data)
+  .then(response => keysToCamel(response.data))
   .catch((error) => { throw error.response.data; });
 
 
@@ -53,7 +54,7 @@ export const createArticle = (title, owner) => axiosInstance
 
 
 export const patchArticle = (articleId, articleObject) => axiosInstance
-  .patch(`/articles/${articleId}`, articleObject)
+  .patch(`/articles/${articleId}`, keysToSnake(articleObject))
   .then(response => response.data)
   .catch((error) => { throw error.response.data; });
 

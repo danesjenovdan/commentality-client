@@ -34,7 +34,7 @@ export default {
     async enableCommenting() {
       if (!this.canComment) {
         await patchArticle(this.articleId, {
-          can_comment: true,
+          canComment: true,
         });
         this.$emit('commentingEnabled');
       }
@@ -42,7 +42,7 @@ export default {
     async disableCommenting() {
       if (this.canComment) {
         await patchArticle(this.articleId, {
-          can_comment: false,
+          canComment: false,
         });
         this.$emit('commentingDisabled');
       }
