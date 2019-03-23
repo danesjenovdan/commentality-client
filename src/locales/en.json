@@ -13,9 +13,9 @@
   },
   "sort": {
     "sort-by": "Sort by",
-    "like": "Agreeability",
-    "dislike": "Disagreeability",
-    "meh": "No opinion"
+    "time": "Time added",
+    "consensus": "Consensus",
+    "indifference": "Indifference"
   },
   "result-labels": {
     "like": "agree",

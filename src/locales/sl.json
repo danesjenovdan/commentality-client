@@ -13,9 +13,9 @@
   },
   "sort": {
     "sort-by": "Razvrsti glede na",
-    "like": "Strinjanje",
-    "dislike": "Nestrinjanje",
-    "meh": "Neopredeljenost"
+    "time": "Čas oddaje",
+    "consensus": "Konsenz",
+    "indifference": "Neopredeljenost"
   },
   "result-labels": {
     "like": "strinjanje",

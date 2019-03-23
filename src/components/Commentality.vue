@@ -11,6 +11,7 @@
         />
       </transition>
     </h3>
+    <sort v-model="currentSortCriterion" />
     <transition
       name="fade"
       mode="out-in"
@@ -18,9 +19,7 @@
       <comments
         class="scroll-container"
         :comments="comments"
-        :current-sort-criterion="currentSortCriterion"
         @vote="sendVote"
-        @sort="updateSort"
       />
     </transition>
     <c-footer />
@@ -29,21 +28,23 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { sortBy, cloneDeep, findIndex } from 'lodash';
+import { findIndex } from 'lodash';
 
-// import Results from './Results.vue';
-import Comments from './Comments.vue';
-import CFooter from './CFooter.vue';
+import sortBy, { SortCriterion } from '../sort';
 import {
   getArticle,
   voteOnComment,
 } from '../requests';
+import Comments from './Comments.vue';
+import CFooter from './CFooter.vue';
+import Sort from './Sort.vue';
 
 export default {
   name: 'Commentality',
   components: {
     Comments,
     CFooter,
+    Sort,
   },
   props: {
     articleId: {
@@ -55,7 +56,7 @@ export default {
     return {
       article: {},
       rawComments: [],
-      currentSortCriterion: null,
+      currentSortCriterion: SortCriterion.Time,
     };
   },
   computed: {
@@ -71,14 +72,7 @@ export default {
         : this.$t('please-vote-to-see-opinion');
     },
     comments() {
-      if (this.currentSortCriterion !== null) {
-        return this.rawComments;
-      }
-
-      return sortBy(this.rawComments, (comment) => {
-        const allVotes = comment.voterIds.length;
-        return comment.votes[this.currentSortCriterion] / allVotes;
-      }).reverse();
+      return sortBy(this.rawComments, this.currentSortCriterion);
     },
   },
   async created() {
@@ -97,9 +91,6 @@ export default {
       const updatedComment = await voteOnComment(uid, type);
       const updatedCommentIndex = findIndex(this.rawComments, { uid });
       this.$set(this.rawComments, updatedCommentIndex, updatedComment);
-    },
-    updateSort(newSortCriterion) {
-      this.currentSortCriterion = newSortCriterion;
     },
   },
 };
