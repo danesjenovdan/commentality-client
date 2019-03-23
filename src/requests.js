@@ -10,116 +10,114 @@ export const setJwtToken = (token) => {
   });
 };
 
-export const login = (email, password) => new Promise(
-  (resolve, reject) => axiosInstance
+export const login = (email, password) =>
+  axiosInstance
     .post('/users/login', { email, password })
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
+    .then(response => response.data)
+    .catch(error => {throw error.response.data})
 
-export const getCode = number => new Promise(
-  (resolve, reject) => axiosInstance
+
+export const getCode = number =>
+  axiosInstance
     .post('/users/', { number })
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
+    .then(response => response.data)
+    .catch(error => {throw error.response.data})
 
-export const verifyCode = (number, code) => new Promise(
-  (resolve, reject) => axiosInstance
+
+export const verifyCode = (number, code) =>
+  axiosInstance
     .post('/users/verify', { number, code })
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
+    .then(response => response.data)
+    .catch(error => {throw error.response.data})
 
-export const refreshToken = () => new Promise(
-  (resolve, reject) => axiosInstance
+
+export const refreshToken = () =>
+  axiosInstance
     .post('/users/refresh', {})
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
+    .then(response => response.data)
+    .catch(error => {throw error.response.data})
 
-export const register = (email, password) => new Promise(
-  (resolve, reject) => axiosInstance
+
+export const register = (email, password) =>
+  axiosInstance
     .post('/users/', { email, password, name: email })
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
+    .then(response => response.data)
+    .catch(error => {throw error.response.data})
 
-export const getArticle = articleId => new Promise(
-  (resolve, reject) => axiosInstance
+
+export const getArticle = articleId =>
+  axiosInstance
     .get(`/articles/${articleId}`)
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
+    .then(response => response.data)
+    .catch(error => {throw error.response.data})
 
-export const createArticle = (title, owner) => new Promise(
-  (resolve, reject) => axiosInstance
+
+export const createArticle = (title, owner) =>
+  axiosInstance
     .post('/articles/', { title, owner })
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
+    .then(response => response.data)
+    .catch(error => {throw error.response.data})
 
-export const patchArticle = (articleId, articleObject) => new Promise(
-  (resolve, reject) => axiosInstance
+
+export const patchArticle = (articleId, articleObject) =>
+  axiosInstance
     .patch(`/articles/${articleId}`, articleObject)
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
+    .then(response => response.data)
+    .catch(error => {throw error.response.data})
 
-export const getArticlesByProperty = property => new Promise(
-  (resolve, reject) => axiosInstance
+
+export const getArticlesByProperty = property =>
+  axiosInstance
     .get(`/articles/by_property/${property}`)
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
+    .then(response => response.data)
+    .catch(error => {throw error.response.data})
 
-export const createComment = (articleId, contents) => new Promise(
-  (resolve, reject) => axiosInstance
+
+export const createComment = (articleId, contents) =>
+  axiosInstance
     .post('/comments/', {
       contents,
       article_uid: articleId,
     })
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
+    .then(response => response.data)
+    .catch(error => {throw error.response.data})
 
-export const hideComment = commentId => new Promise(
-  (resolve, reject) => axiosInstance
+
+export const hideComment = commentId =>
+  axiosInstance
     .post(`/comments/hide/${commentId}`, {})
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
+    .then(response => response.data)
+    .catch(error => {throw error.response.data})
 
-export const showComment = commentId => new Promise(
-  (resolve, reject) => axiosInstance
+
+export const showComment = commentId =>
+  axiosInstance
     .post(`/comments/show/${commentId}`, {})
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
+    .then(response => response.data)
+    .catch(error => {throw error.response.data})
+
 
 // TODO REDUNDANT
-// export const getComments = articleId => new Promise(
-//   (resolve, reject) => axiosInstance
+// export const getComments = articleId =>
+//  axiosInstance
 //     .get(`/comments/${articleId}`)
-//     .then(response => resolve(response.data))
-//     .catch(error => reject(error.response.data)),
+//     .then(response => response.data)
+//     .catch(error => {throw error.response.data})
 // );
 
-export const postComment = (articleId, text) => new Promise(
-  (resolve, reject) => axiosInstance
+export const postComment = (articleId, text) =>
+  axiosInstance
     .post('/comments/', {
       contents: text,
       article_external_id: articleId,
     })
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
+    .then(response => response.data)
+    .catch(error => {throw error.response.data})
 
-export const voteOnComment = (uid, type) => new Promise(
-  (resolve, reject) => axiosInstance
+export const voteOnComment = (uid, type) =>
+  axiosInstance
     .post(`/comments/vote/${uid}`, { type })
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
+    .then(response => response.data)
+    .catch(error => {throw error.response.data})
 
 window.addComment = postComment;
