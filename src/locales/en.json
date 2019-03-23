@@ -4,6 +4,7 @@
   "enter-phone-for-code": "Please enter your phone number to receive code.",
   "enter-code-for-results": "Enter the code to see the results.",
   "get-code": "Get the code",
+  "phone-number-placeholder": "+386 41 123 456",
   "enter": "Enter",
   "choices": {
     "like": "I agree",

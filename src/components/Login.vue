@@ -12,7 +12,7 @@
         v-model="phoneNumber"
         type="tel"
         class="phone-number"
-        placeholder="+386 41 123 456"
+        :placeholder="$t('phone-number-placeholder')"
       >
       <button
         class="button"

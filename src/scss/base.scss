@@ -36,6 +36,8 @@ input[type=number], input[type=tel] {
   border-radius: $height / 2;
   height: $height;
   padding: 0 ($height / 3);
+
+  &::placeholder { color: lighten($text-color, 50%); }
 }
 
 .button {
