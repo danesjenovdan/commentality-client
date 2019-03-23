@@ -11,12 +11,11 @@
       <input
         v-model="phoneNumber"
         type="tel"
-        class="phone-number"
+        class="number"
         :placeholder="$t('phone-number-placeholder')"
       >
       <button
-        class="button"
-        @click="getCode"
+        class="button confirm"
       >
         {{ $t('get-code') }}
       </button>
@@ -30,9 +29,12 @@
         v-model="code"
         type="number"
         name="code"
+        class="number"
         placeholder="123456"
       >
-      <button @click="submitCode">
+      <button
+        class="button confirm"
+      >
         {{ $t('enter') }}
       </button>
     </div>
@@ -116,7 +118,7 @@ export default {
 .login {
   font-size: 14px;
 
-  .phone-number {
+  .number {
     width: 150px;
     margin: 1.75rem 1rem 0;
   }
