@@ -4,14 +4,14 @@
     <div v-else>
       <p
         class="text"
-        v-text="comment.text"
+        v-text="contents"
       />
       <div class="options">
         <div
           v-for="action in actions"
           :key="action"
-          :class="['option', action, (comment.voted ? 'chart' : 'button with-icon')]"
-          :style="getOptionStyle(action)"
+          :class="['option', action, (voted ? 'chart' : 'button with-icon')]"
+          :style="voted ? { flex: votes[action] } : null"
           @click="vote(action)"
         >
           {{ $t(`choices.${action}`) }}
@@ -31,8 +31,16 @@ export default {
     Login,
   },
   props: {
-    comment: {
+    contents: {
+      type: String,
+      required: true,
+    },
+    votes: {
       type: Object,
+      required: true,
+    },
+    voterIds: {
+      type: Array,
       required: true,
     },
   },
@@ -40,12 +48,16 @@ export default {
     return {
       triedVoting: false,
       temporaryVote: null,
+      actions: Object.freeze(['like', 'meh', 'dislike']),
     };
   },
   computed: {
     ...mapGetters(['userId', 'authenticated']),
     showLogin() {
       return this.triedVoting && !this.authenticated;
+    },
+    voted() {
+      return this.voterIds.indexOf(this.userId) > -1;
     },
   },
   watch: {
@@ -55,16 +67,10 @@ export default {
       }
     },
   },
-  created() {
-    this.actions = Object.freeze(['like', 'meh', 'dislike']);
-  },
   methods: {
     ...mapActions([
       'startVerification',
     ]),
-    getOptionStyle(action) {
-      return this.comment.voted ? { flex: this.comment.votes[action] } : null;
-    },
     vote(vote) {
       this.triedVoting = true;
 

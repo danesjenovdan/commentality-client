@@ -29,9 +29,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import {
-  chain, cloneDeep, findIndex, includes, mapValues, sum, values,
-} from 'lodash';
+import { sortBy, cloneDeep, findIndex } from 'lodash';
 
 // import Results from './Results.vue';
 import Comments from './Comments.vue';
@@ -63,7 +61,8 @@ export default {
   computed: {
     ...mapGetters(['userId']),
     finishedVoting() {
-      const unvoted = this.comments.filter(comment => !comment.voted);
+      const unvoted = this.comments
+        .filter(comment => comment.voterIds.indexOf(this.userId) === -1);
       return unvoted.length === 0;
     },
     title() {
@@ -72,36 +71,14 @@ export default {
         : this.$t('please-vote-to-see-opinion');
     },
     comments() {
-      let comments = this.rawComments;
-
       if (this.currentSortCriterion !== null) {
-        comments = chain(comments)
-          .cloneDeep()
-          .sortBy((comment) => {
-            const voteCounts = mapValues(
-              comment.votes,
-              vote => vote.length,
-            );
-            const allVotes = sum(values(voteCounts));
-            return voteCounts[this.currentSortCriterion] / allVotes;
-          })
-          .reverse()
-          .value();
+        return this.rawComments;
       }
 
-      return comments.map(comment => ({
-        text: comment.contents,
-        votes: {
-          like: comment.votes.like.length,
-          meh: comment.votes.meh.length,
-          dislike: comment.votes.dislike.length,
-        },
-        voted: includes(
-          this.article.comments_voted_on,
-          comment.uid,
-        ),
-        uid: comment.uid,
-      }));
+      return sortBy(this.rawComments, (comment) => {
+        const allVotes = comment.voterIds.length;
+        return comment.votes[this.currentSortCriterion] / allVotes;
+      }).reverse();
     },
   },
   async created() {
@@ -113,19 +90,13 @@ export default {
       'refreshJwtToken',
     ]),
     async fetchComments() {
-      this.article = await getArticle(this.articleId);
-      this.rawComments = this.article.visible_comments;
+      const articles = await getArticle(this.articleId);
+      this.rawComments = articles.visibleComments;
     },
     async sendVote({ uid, type }) {
       const updatedComment = await voteOnComment(uid, type);
-      const newComments = cloneDeep(this.rawComments);
-      const updatedCommentIndex = findIndex(
-        newComments,
-        { uid: updatedComment.uid },
-      );
-
-      newComments[updatedCommentIndex] = updatedComment;
-      this.rawComments = newComments;
+      const updatedCommentIndex = findIndex(this.rawComments, { uid });
+      this.$set(this.rawComments, updatedCommentIndex, updatedComment);
     },
     updateSort(newSortCriterion) {
       this.currentSortCriterion = newSortCriterion;

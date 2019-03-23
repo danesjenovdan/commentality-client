@@ -2,8 +2,8 @@
   <div class="comments">
     <comment
       v-for="comment in comments"
-      :key="comment.text"
-      :comment="comment"
+      :key="comment.uid"
+      v-bind="comment"
       @vote="$emit('vote', {uid: comment.uid, type: $event})"
     />
   </div>
