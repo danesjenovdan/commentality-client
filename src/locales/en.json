@@ -6,6 +6,8 @@
   "get-code": "Get the code",
   "phone-number-placeholder": "+386 41 123 456",
   "enter": "Enter",
+  "comment-input-placeholder": "Enter comment here",
+  "send-comment": "Send comment",
   "choices": {
     "like": "I agree",
     "dislike": "I disagree",

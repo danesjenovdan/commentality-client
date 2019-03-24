@@ -6,6 +6,8 @@
   "get-code": "Pridobi kodo",
   "phone-number-placeholder": "+386 41 123 456",
   "enter": "Vnesi",
+  "comment-input-placeholder": "Podaj svojo trditev",
+  "send-comment": "Pošlji trditev",
   "choices": {
     "like": "Se strinjam",
     "dislike": "Se ne strinjam",

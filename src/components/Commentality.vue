@@ -22,6 +22,15 @@
         @vote="sendVote"
       />
     </transition>
+    <transition
+      name="fade"
+      mode="out-in"
+    >
+      <comment-input
+        v-if="finishedVoting && !commented"
+        @sendComment="sendComment"
+      />
+    </transition>
     <c-footer />
   </div>
 </template>
@@ -32,10 +41,10 @@ import { findIndex } from 'lodash';
 
 import sortBy, { SortCriterion } from '../sort';
 import {
-  getArticle,
-  voteOnComment,
+  createComment, getArticle, voteOnComment,
 } from '../requests';
 import Comments from './Comments.vue';
+import CommentInput from './CommentInput.vue';
 import CFooter from './CFooter.vue';
 import Sort from './Sort.vue';
 
@@ -43,6 +52,7 @@ export default {
   name: 'Commentality',
   components: {
     Comments,
+    CommentInput,
     CFooter,
     Sort,
   },
@@ -54,17 +64,25 @@ export default {
   },
   data() {
     return {
-      article: {},
-      rawComments: [],
+      article: null,
       currentSortCriterion: SortCriterion.Time,
     };
   },
   computed: {
     ...mapGetters(['userId']),
     finishedVoting() {
-      const unvoted = this.comments
-        .filter(comment => comment.voterIds.indexOf(this.userId) === -1);
-      return unvoted.length === 0;
+      if (this.article) {
+        const unvoted = this.comments
+          .filter(comment => comment.voterIds.indexOf(this.userId) === -1);
+        return unvoted.length === 0;
+      }
+      return false;
+    },
+    commented() {
+      if (this.article) {
+        return this.article.commenters.indexOf(this.userId) > -1;
+      }
+      return false;
     },
     title() {
       return this.finishedVoting
@@ -72,7 +90,10 @@ export default {
         : this.$t('please-vote-to-see-opinion');
     },
     comments() {
-      return sortBy(this.rawComments, this.currentSortCriterion);
+      if (this.article) {
+        return sortBy(this.article.visibleComments, this.currentSortCriterion);
+      }
+      return [];
     },
   },
   async created() {
@@ -84,13 +105,23 @@ export default {
       'refreshJwtToken',
     ]),
     async fetchComments() {
-      const articles = await getArticle(this.articleId);
-      this.rawComments = articles.visibleComments;
+      const article = await getArticle(this.articleId);
+      this.article = article;
     },
     async sendVote({ uid, type }) {
       const updatedComment = await voteOnComment(uid, type);
-      const updatedCommentIndex = findIndex(this.rawComments, { uid });
-      this.$set(this.rawComments, updatedCommentIndex, updatedComment);
+      const updatedCommentIndex = findIndex(
+        this.article.visibleComments,
+        { uid },
+      );
+      this.$set(
+        this.article.visibleComments,
+        updatedCommentIndex,
+        updatedComment,
+      );
+    },
+    async sendComment(contents) {
+      createComment(this.article.uid, contents);
     },
   },
 };
