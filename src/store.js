@@ -69,8 +69,8 @@ export default new Vuex.Store({
       commit('SET_AUTH_STEP', AuthStep.StartedVerification);
     },
     getCode({ commit }, phoneNumber) {
-      getCode(phoneNumber);
       commit('SET_AUTH_STEP', AuthStep.RequestedCode);
+      return getCode(phoneNumber);
     },
     storeAuthData({ commit }, { jwtToken, userId }) {
       commit('SET_JWT', jwtToken);

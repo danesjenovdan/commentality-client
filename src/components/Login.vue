@@ -13,7 +13,7 @@
       >
       <button
         class="button confirm"
-        @click="getCode(phoneNumber)"
+        @click="fetchCode"
       >
         {{ $t('get-code') }}
       </button>
@@ -71,6 +71,10 @@ export default {
       'getCode',
       'submitCode',
     ]),
+    async fetchCode() {
+      // The server returns our number in a normalized format
+      this.phoneNumber = await this.getCode(this.phoneNumber);
+    },
   },
 };
 </script>

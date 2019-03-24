@@ -93,5 +93,5 @@ export const showComment = commentId => axiosInstance
 
 export const voteOnComment = (uid, type) => axiosInstance
   .post(`/comments/vote/${uid}`, { type })
-  .then(response => response.data)
+  .then(response => keysToCamel(response.data))
   .catch((error) => { throw error.response.data; });
