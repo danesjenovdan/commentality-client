@@ -7,14 +7,27 @@
         v-text="contents"
       />
       <div class="options">
-        <div
-          v-for="action in actions"
-          :key="action"
-          :class="['option', action, (voted ? 'chart' : 'button with-icon')]"
-          :style="voted ? { flex: votes[action] } : null"
-          @click="vote(action)"
-        >
-          {{ $t(`choices.${action}`) }}
+        <div class="options-container">
+          <div
+            v-for="action in actions"
+            :key="action"
+            class="portion-label"
+            :style="voted ? { flex: votes[action] } : null"
+          >
+            <strong>{{ getPercentage(action) }}</strong>
+            <span v-text="$t(`result-labels.${action}`)" />
+          </div>
+        </div>
+        <div class="options-container">
+          <div
+            v-for="action in actions"
+            :key="action"
+            :class="['option', action, (voted ? 'chart' : 'button with-icon')]"
+            :style="voted ? { flex: votes[action] } : null"
+            @click="vote(action)"
+          >
+            {{ $t(`choices.${action}`) }}
+          </div>
         </div>
       </div>
     </div>
@@ -23,6 +36,8 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import { sum, round } from 'lodash';
+
 import Login from './Login.vue';
 
 export default {
@@ -59,6 +74,9 @@ export default {
     voted() {
       return this.voterIds.indexOf(this.userId) > -1;
     },
+    allVotes() {
+      return sum(Object.values(this.votes));
+    },
   },
   watch: {
     authenticated(newValue) {
@@ -80,6 +98,10 @@ export default {
         this.temporaryVote = vote;
         this.startVerification();
       }
+    },
+    getPercentage(action) {
+      const value = round(this.votes[action] / this.allVotes * 100, 1);
+      return `${value} %`;
     },
   },
 };
@@ -130,12 +152,13 @@ export default {
   }
 
   .options {
-    align-items: center;
-    display: flex;
-    height: 52px;
+    .options-container {
+      align-items: center;
+      display: flex;
 
-    @media (max-width: 767.98px) {
-      flex-direction: column;
+      @media (max-width: 767.98px) {
+        flex-direction: column;
+      }
     }
 
     .option {
@@ -160,6 +183,7 @@ export default {
 
       &.button {
         flex: 1;
+        height: 1.5rem;
 
         &:not(:last-child) { margin-right: 0.475rem; }
 
@@ -190,7 +214,25 @@ export default {
       }
     }
 
+    .labels { display: flex; }
 
+    .portion-label {
+      flex-shrink: 1;
+      flex-grow: 1;
+      margin-right: 4px;
+      display: flex;
+      flex-direction: column;
+      font-size: 0.5rem;
+      font-style: italic;
+      line-height: 1;
+      margin: 0 0.25rem 0.5rem 0.25rem;
+      text-align: center;
+
+      strong { font-weight: 800; }
+      span { font-weight: 200; }
+
+      &:last-child { margin-right: 0; }
+    }
   }
 }
 
