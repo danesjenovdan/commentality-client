@@ -91,25 +91,7 @@ export const showComment = commentId => axiosInstance
   .catch((error) => { throw error.response.data; });
 
 
-// TODO REDUNDANT
-// export const getComments = articleId =>
-//  axiosInstance
-//     .get(`/comments/${articleId}`)
-//     .then(response => response.data)
-//     .catch((error) => { throw error.response.data; });
-// );
-
-export const postComment = (articleId, text) => axiosInstance
-  .post('/comments/', {
-    contents: text,
-    article_external_id: articleId,
-  })
-  .then(response => response.data)
-  .catch((error) => { throw error.response.data; });
-
 export const voteOnComment = (uid, type) => axiosInstance
   .post(`/comments/vote/${uid}`, { type })
   .then(response => response.data)
   .catch((error) => { throw error.response.data; });
-
-window.addComment = postComment;
