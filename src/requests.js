@@ -59,6 +59,11 @@ export const patchArticle = (articleId, articleObject) => axiosInstance
   .catch((error) => { throw error.response.data; });
 
 
+export const getMyProperties = () => axiosInstance
+  .get('/users/my_properties')
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
+
 export const getArticlesByProperty = property => axiosInstance
   .get(`/articles/by_property/${property}`)
   .then(response => response.data)

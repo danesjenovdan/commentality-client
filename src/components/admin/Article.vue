@@ -76,6 +76,11 @@ export default {
       this.comments = article.visibleComments.concat(article.hiddenComments).sort((a, b) => new Date(a.createdAt) < new Date(b.createdAt));
     },
   },
+  watch: {
+    articleId() {
+      this.getComments();
+    },
+  },
 };
 </script>
 

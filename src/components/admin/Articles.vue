@@ -28,7 +28,10 @@
                   :key="article.uid"
                 >
                   <td>
-                    <a href="">
+                    <a
+                      href="#"
+                      @click.prevent="$emit('selectedArticleId', article.uid)"
+                    >
                       {{ article.title }}
                     </a>
                   </td>
@@ -105,3 +108,11 @@ export default {
 </script>
 
 <style lang="scss" src="@/scss/base.scss" />
+</style>
+
+<style lang="scss">
+  .table-responsive {
+    height: 400px;
+    overflow-y: auto;
+  }
+</style>

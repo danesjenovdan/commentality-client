@@ -16,16 +16,44 @@
           v-if="authenticated"
           class="row"
         >
+          <select
+            v-model="selectedPropertyId"
+            class="form-control"
+          >
+            <option disabled value="">Select your property</option>
+            <option
+              v-for="property in properties"
+              :key="property.uid"
+              :value="property.uid"
+            >
+              {{ property.name }}
+            </option>
+          </select>
           <articles
-            :property-id="propertyId"
+            v-if="selectedPropertyId !== ''"
+            :property-id="selectedPropertyId"
+            @selectedArticleId="(uid) => selectedArticleId = uid"
           />
-        </div>
-        <div
-          v-if="authenticated"
-          class="row"
-        >
+
+          <!-- single article below -->
+
+          <select
+            v-if="selectedPropertyId !== ''"
+            v-model="selectedArticleId"
+            class="form-control"
+          >
+            <option disabled value="">Select your article</option>
+            <option
+              v-for="article in articles"
+              :key="article.uid"
+              :value="article.uid"
+            >
+              {{ article.title }}
+            </option>
+          </select>
           <an-article
-            :article-id="articleId"
+            v-if="selectedArticleId !== ''"
+            :article-id="selectedArticleId"
           />
         </div>
       </div>
@@ -38,6 +66,7 @@ import { mapGetters, mapActions } from 'vuex';
 import Login from '../components/Login.vue';
 import Articles from '../components/admin/Articles.vue';
 import AnArticle from '../components/admin/Article.vue';
+import { getArticlesByProperty, getMyProperties } from '../requests';
 
 export default {
   name: 'Admin',
@@ -48,8 +77,10 @@ export default {
   },
   data() {
     return {
-      propertyId: 'bba4266cf6264de1ae5a85217e3e0935', // TODO stop hardcoding property
-      articleId: '4af5aabde5044d88b4a905cadb576bc7', // TODO stop hardcoding articleId
+      selectedArticleId: '',
+      articles: [],
+      selectedPropertyId: '',
+      properties: [],
     };
   },
   computed: {
@@ -60,8 +91,12 @@ export default {
   watch: {
     authenticated(newValue) {
       if (newValue === true) {
-        this.setPropertyId();
+        // this.selectedPropertyId = this.properties[0].uid;
+        // TODO not sure what I wanted to do here
       }
+    },
+    async selectedPropertyId(newValue) {
+      this.articles = await getArticlesByProperty(newValue);
     },
   },
   methods: {
@@ -69,14 +104,13 @@ export default {
       'startVerification',
       'refreshJwtToken',
     ]),
-    setPropertyId() {
-      // placeholder function to dynamically set property id after login
-      return false;
-    },
   },
   async created() {
     this.startVerification();
     await this.refreshJwtToken();
+
+    this.properties = await getMyProperties();
+    this.selectedPropertyId = this.properties[0].uid;
   },
 };
 </script>
