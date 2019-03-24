@@ -73,7 +73,7 @@ export default {
   methods: {
     async getComments() {
       const article = await getArticle(this.articleId);
-      this.comments = article.visibleComments.concat(article.hiddenComments);
+      this.comments = article.visibleComments.concat(article.hiddenComments).sort((a, b) => new Date(a.createdAt) < new Date(b.createdAt));
     },
   },
 };

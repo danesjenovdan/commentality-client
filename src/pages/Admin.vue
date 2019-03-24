@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="container">
+  <div id="app" class="container-fluid">
     <div class="py-0 pt-4">
     </div>
     <div class="" style="">
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import Login from '../components/Login.vue';
 import Articles from '../components/admin/Articles.vue';
 import AnArticle from '../components/admin/Article.vue';
@@ -65,10 +65,18 @@ export default {
     },
   },
   methods: {
+    ...mapActions([
+      'startVerification',
+      'refreshJwtToken',
+    ]),
     setPropertyId() {
       // placeholder function to dynamically set property id after login
       return false;
     },
+  },
+  async created() {
+    this.startVerification();
+    await this.refreshJwtToken();
   },
 };
 </script>

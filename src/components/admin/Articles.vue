@@ -33,15 +33,15 @@
                     </a>
                   </td>
                   <td class="">
-                    {{ article.visibleComments.length }}
+                    {{ article.visible_comments.length }}
                   </td>
                   <td class="">
-                    {{ article.hiddenComments.length }}
+                    {{ article.hidden_comments.length }}
                   </td>
                   <td class="">
                     <commenting-toggle
                       :article-id="article.uid"
-                      :can-comment="article.canComment"
+                      :can-comment="article.can_comment"
                       @commentingEnabled="refreshArticles"
                       @commentingDisabled="refreshArticles"
                     />
@@ -49,7 +49,7 @@
                   <td class="">
                     <voting-toggle
                       :article-id="article.uid"
-                      :can-vote="article.canVote"
+                      :can-vote="article.can_vote"
                       @votingEnabled="refreshArticles"
                       @votingDisabled="refreshArticles"
                     />
