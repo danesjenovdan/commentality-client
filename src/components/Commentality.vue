@@ -11,22 +11,24 @@
         />
       </transition>
     </h3>
+    <sort v-model="currentSortCriterion" />
     <transition
       name="fade"
       mode="out-in"
     >
-      <results
-        v-if="finishedVoting"
-        class="scroll-container"
-        :comments="comments"
-        :current-sort-criterion="currentSortCriterion"
-        @sort="updateSort"
-      />
-      <voting
-        v-else
+      <comments
         class="scroll-container"
         :comments="comments"
         @vote="sendVote"
+      />
+    </transition>
+    <transition
+      name="fade"
+      mode="out-in"
+    >
+      <comment-input
+        v-if="finishedVoting && !commented"
+        @sendComment="sendComment"
       />
     </transition>
     <c-footer />
@@ -34,23 +36,25 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+import { findIndex } from 'lodash';
+
+import sortBy, { SortCriterion } from '../sort';
 import {
-  chain, cloneDeep, concat, findIndex, includes, mapValues, sum, values,
-} from 'lodash';
-
-import Results from './Results.vue';
-import Voting from './Voting.vue';
+  createComment, getArticle, voteOnComment,
+} from '../requests';
+import Comments from './Comments.vue';
+import CommentInput from './CommentInput.vue';
 import CFooter from './CFooter.vue';
-import { getArticle, voteOnComment } from '../requests';
-
+import Sort from './Sort.vue';
 
 export default {
   name: 'Commentality',
   components: {
-    Results,
-    Voting,
+    Comments,
+    CommentInput,
     CFooter,
+    Sort,
   },
   props: {
     articleId: {
@@ -60,15 +64,25 @@ export default {
   },
   data() {
     return {
-      rawComments: [],
-      currentSortCriterion: null,
+      article: null,
+      currentSortCriterion: SortCriterion.Time,
     };
   },
   computed: {
     ...mapGetters(['userId']),
     finishedVoting() {
-      const unvoted = this.comments.filter(comment => !comment.voted);
-      return unvoted.length === 0;
+      if (this.article) {
+        const unvoted = this.comments
+          .filter(comment => comment.voterIds.indexOf(this.userId) === -1);
+        return unvoted.length === 0;
+      }
+      return false;
+    },
+    commented() {
+      if (this.article) {
+        return this.article.commenters.indexOf(this.userId) > -1;
+      }
+      return false;
     },
     title() {
       return this.finishedVoting
@@ -76,61 +90,38 @@ export default {
         : this.$t('please-vote-to-see-opinion');
     },
     comments() {
-      let comments = this.rawComments;
-
-      if (this.currentSortCriterion !== null) {
-        comments = chain(comments)
-          .cloneDeep()
-          .sortBy((comment) => {
-            const voteCounts = mapValues(
-              comment.votes,
-              vote => vote.length,
-            );
-            const allVotes = sum(values(voteCounts));
-            return voteCounts[this.currentSortCriterion] / allVotes;
-          })
-          .reverse()
-          .value();
+      if (this.article) {
+        return sortBy(this.article.visibleComments, this.currentSortCriterion);
       }
-
-      return comments.map(comment => ({
-        text: comment.contents,
-        votes: {
-          like: comment.votes.like.length,
-          meh: comment.votes.meh.length,
-          dislike: comment.votes.dislike.length,
-        },
-        voted: includes(
-          concat(...values(comment.votes)),
-          this.userId,
-        ),
-        uid: comment.uid,
-      }));
+      return [];
     },
   },
   async created() {
-    await this.login();
-    this.fetchcomments();
+    await this.refreshJwtToken();
+    this.fetchComments();
   },
   methods: {
-    ...mapActions(['login']),
-    async fetchcomments() {
+    ...mapActions([
+      'refreshJwtToken',
+    ]),
+    async fetchComments() {
       const article = await getArticle(this.articleId);
-      this.rawComments = article.comments;
+      this.article = article;
     },
     async sendVote({ uid, type }) {
       const updatedComment = await voteOnComment(uid, type);
-      const newComments = cloneDeep(this.rawComments);
       const updatedCommentIndex = findIndex(
-        newComments,
-        { uid: updatedComment.uid },
+        this.article.visibleComments,
+        { uid },
       );
-
-      newComments[updatedCommentIndex] = updatedComment;
-      this.rawComments = newComments;
+      this.$set(
+        this.article.visibleComments,
+        updatedCommentIndex,
+        updatedComment,
+      );
     },
-    updateSort(newSortCriterion) {
-      this.currentSortCriterion = newSortCriterion;
+    async sendComment(contents) {
+      createComment(this.article.uid, contents);
     },
   },
 };
@@ -175,10 +166,11 @@ export default {
   }
 
   .instructions {
+    font-size: 0.8rem;
     text-align: center;
     font-style: italic;
     font-weight: 800;
-    border-bottom: 2px solid $primary-color;
+    border-bottom: 1px solid $primary-color;
     margin: 0 #{-$wrapper-padding};
     padding: $wrapper-padding;
     flex: 0 0 auto;

@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { keysToCamel, keysToSnake } from './utils';
 
-const baseURL = 'https://frontmentality.djnd.si/backend/api/v1';
+const baseURL = 'http://localhost:5000/api/v2';
 let axiosInstance = axios.create({ baseURL });
 
 export const setJwtToken = (token) => {
@@ -10,42 +11,91 @@ export const setJwtToken = (token) => {
   });
 };
 
-export const login = (email, password) => new Promise(
-  (resolve, reject) => axiosInstance
-    .post('/users/login', { email, password })
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
+export const login = (email, password) => axiosInstance
+  .post('/users/login', { email, password })
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
 
-export const register = (email, password) => new Promise(
-  (resolve, reject) => axiosInstance
-    .post('/users/', { email, password, name: email })
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
 
-export const getArticle = articleId => new Promise(
-  (resolve, reject) => axiosInstance
-    .get(`/articles/${articleId}`)
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
+export const getCode = number => axiosInstance
+  .post('/users/', { number })
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
 
-export const postComment = (articleId, text) => new Promise(
-  (resolve, reject) => axiosInstance
-    .post('/comments/', {
-      contents: text,
-      article_external_id: articleId,
-    })
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
 
-export const voteOnComment = (uid, type) => new Promise(
-  (resolve, reject) => axiosInstance
-    .post(`/comments/vote/${uid}`, { type })
-    .then(response => resolve(response.data))
-    .catch(error => reject(error.response.data)),
-);
+export const verifyCode = (number, code) => axiosInstance
+  .post('/users/verify', { number, code })
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
 
-window.addComment = postComment;
+
+export const refreshToken = () => axiosInstance
+  .post('/users/refresh', {})
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
+
+export const refreshLongToken = () => axiosInstance
+  .post('/users/refresh_long', {})
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
+
+export const register = (email, password) => axiosInstance
+  .post('/users/', { email, password, name: email })
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
+
+
+export const getArticle = articleId => axiosInstance
+  .get(`/articles/${articleId}`)
+  .then(response => keysToCamel(response.data))
+  .catch((error) => { throw error.response.data; });
+
+
+export const createArticle = (title, owner) => axiosInstance
+  .post('/articles/', { title, owner })
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
+
+
+export const patchArticle = (articleId, articleObject) => axiosInstance
+  .patch(`/articles/${articleId}`, keysToSnake(articleObject))
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
+
+
+export const getMyProperties = () => axiosInstance
+  .get('/users/my_properties')
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
+
+export const getArticlesByProperty = property => axiosInstance
+  .get(`/articles/by_property/${property}`)
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
+
+
+export const createComment = (articleId, contents) => axiosInstance
+  .post('/comments/', {
+    contents,
+    article_uid: articleId,
+  })
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
+
+
+export const hideComment = commentId => axiosInstance
+  .post(`/comments/hide/${commentId}`, {})
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
+
+
+export const showComment = commentId => axiosInstance
+  .post(`/comments/show/${commentId}`, {})
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
+
+
+export const voteOnComment = (uid, type) => axiosInstance
+  .post(`/comments/vote/${uid}`, { type })
+  .then(response => keysToCamel(response.data))
+  .catch((error) => { throw error.response.data; });

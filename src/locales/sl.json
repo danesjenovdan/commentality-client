@@ -1,6 +1,13 @@
 {
   "public-opinion": "Javno mnenje",
   "please-vote-to-see-opinion": "Za ogled javnega mnenja se opredeli do naslednjih trditev",
+  "enter-phone-for-code": "Vnesi telefonsko številko za prejem kode.",
+  "enter-code-for-results": "Vnesi kodo za prikaz rezultatov.",
+  "get-code": "Pridobi kodo",
+  "phone-number-placeholder": "+386 41 123 456",
+  "enter": "Vnesi",
+  "comment-input-placeholder": "Podaj svojo trditev",
+  "send-comment": "Pošlji trditev",
   "choices": {
     "like": "Se strinjam",
     "dislike": "Se ne strinjam",
@@ -8,9 +15,9 @@
   },
   "sort": {
     "sort-by": "Razvrsti glede na",
-    "like": "Strinjanje",
-    "dislike": "Nestrinjanje",
-    "meh": "Neopredeljenost"
+    "time": "Čas oddaje",
+    "consensus": "Konsenz",
+    "indifference": "Neopredeljenost"
   },
   "result-labels": {
     "like": "strinjanje",

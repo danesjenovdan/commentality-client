@@ -13,6 +13,7 @@ module.exports = {
     index: 'src/app.js',
     embed: 'src/embed.js',
     embed_en: 'src/embed_en.js',
+    admin: 'src/admin.js',
   },
   pluginOptions: {
     i18n: {
