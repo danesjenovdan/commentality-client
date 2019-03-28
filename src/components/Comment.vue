@@ -14,8 +14,11 @@
             class="portion-label"
             :style="voted ? { flex: votes[action] } : null"
           >
-            <strong>{{ getPercentage(action) }}</strong>
-            <span v-text="$t(`result-labels.${action}`)" />
+            <strong v-if="voted">{{ getPercentage(action) }}</strong>
+            <span
+              v-if="voted"
+              v-text="$t(`result-labels.${action}`)"
+            />
           </div>
         </div>
         <div class="options-container">
