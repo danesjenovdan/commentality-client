@@ -61,7 +61,9 @@ body {
   font-size: 1rem;
   overflow: hidden;
 }
+</style>
 
+<style lang="scss" scoped>
 .container {
   max-width: 960px;
   padding: $container-padding;
