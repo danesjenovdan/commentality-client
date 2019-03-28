@@ -1,62 +1,74 @@
 <template>
-  <div id="app" class="container-fluid">
-    <div class="py-0 pt-4">
+  <div id="app">
+    <div
+      v-if="!authenticated"
+      class="row"
+    >
+      <div class="col-md-12">
+        <login />
+      </div>
     </div>
-    <div class="" style="">
-      <div class="container">
-        <div
-          v-if="!authenticated"
-          class="row"
-        >
+    <div
+      v-if="authenticated"
+    >
+      <div class="container pt-3">
+        <div class="row">
           <div class="col-md-12">
-            <login />
+            Long-term token (for developers): <span id="lt-token">{{ longTermToken.jwt_token }}</span>
           </div>
         </div>
-        <div
-          v-if="authenticated"
-          class="row"
-        >
-          <select
-            v-model="selectedPropertyId"
-            class="form-control"
-          >
-            <option disabled value="">Select your property</option>
-            <option
-              v-for="property in properties"
-              :key="property.uid"
-              :value="property.uid"
+      </div>
+      <div class="container pt-3 pb-3">
+        <div class="row">
+          <div class="col-md-4 col-md-offset-4">
+            <select
+              v-model="selectedPropertyId"
+              class="form-control"
             >
-              {{ property.name }}
-            </option>
-          </select>
-          <articles
-            v-if="selectedPropertyId !== ''"
-            :property-id="selectedPropertyId"
-            @selectedArticleId="(uid) => selectedArticleId = uid"
-          />
-
-          <!-- single article below -->
-
-          <select
-            v-if="selectedPropertyId !== ''"
-            v-model="selectedArticleId"
-            class="form-control"
-          >
-            <option disabled value="">Select your article</option>
-            <option
-              v-for="article in articles"
-              :key="article.uid"
-              :value="article.uid"
-            >
-              {{ article.title }}
-            </option>
-          </select>
-          <an-article
-            v-if="selectedArticleId !== ''"
-            :article-id="selectedArticleId"
-          />
+              <option disabled value="">Select your property</option>
+              <option
+                v-for="property in properties"
+                :key="property.uid"
+                :value="property.uid"
+              >
+                {{ property.name }}
+              </option>
+            </select>
+          </div>
         </div>
       </div>
+      <articles
+        v-if="selectedPropertyId !== ''"
+        :property-id="selectedPropertyId"
+        @selectedArticleId="(uid) => selectedArticleId = uid"
+      />
+
+      <!-- single article below -->
+
+      <div class="container pt-3 pb-3">
+        <div class="row">
+          <div class="col-md-4 col-md-offset-4">
+            <select
+              v-if="selectedPropertyId !== ''"
+              v-model="selectedArticleId"
+              class="form-control"
+            >
+              <option disabled value="">Select your article</option>
+              <option
+                v-for="article in articles"
+                :key="article.uid"
+                :value="article.uid"
+              >
+                {{ article.title }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <an-article
+        v-if="selectedArticleId !== ''"
+        :article-id="selectedArticleId"
+      />
     </div>
   </div>
 </template>
@@ -66,7 +78,7 @@ import { mapGetters, mapActions } from 'vuex';
 import Login from '../components/Login.vue';
 import Articles from '../components/admin/Articles.vue';
 import AnArticle from '../components/admin/Article.vue';
-import { getArticlesByProperty, getMyProperties } from '../requests';
+import { getArticlesByProperty, getMyProperties, refreshLongToken } from '../requests';
 
 export default {
   name: 'Admin',
@@ -81,6 +93,7 @@ export default {
       articles: [],
       selectedPropertyId: '',
       properties: [],
+      longTermToken: {},
     };
   },
   computed: {
@@ -111,8 +124,18 @@ export default {
 
     this.properties = await getMyProperties();
     this.selectedPropertyId = this.properties[0].uid;
+    this.longTermToken = await refreshLongToken();
   },
 };
 </script>
 
-<style lang="scss" src="@/scss/base.scss" />
+<style lang="scss" src="@/scss/base.scss"></style>
+
+<style lang="scss" scoped>
+#lt-token {
+  width: 200px;
+  overflow-x: auto;
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.2);
+}
+</style>

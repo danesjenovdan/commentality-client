@@ -1,66 +1,58 @@
 <template>
   <div id="app" class="container">
-    <div class="container pb-3">
-      <div class="row">
-        <article-creator
-          property-id="bba4266cf6264de1ae5a85217e3e0935"
-          @articleCreated="refreshArticles"
-        />
-      </div>
+    <div class="row pb-3">
+      <article-creator
+        property-id="bba4266cf6264de1ae5a85217e3e0935"
+        @articleCreated="refreshArticles"
+      />
     </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="table-responsive" style="">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Name&nbsp;</th>
-                  <th>Visible statements</th>
-                  <th style="">Hidden statements</th>
-                  <th style="">Toggle commenting</th>
-                  <th style="">Toggle voting</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="article in articles"
-                  :key="article.uid"
-                >
-                  <td>
-                    <a
-                      href="#"
-                      @click.prevent="$emit('selectedArticleId', article.uid)"
-                    >
-                      {{ article.title }}
-                    </a>
-                  </td>
-                  <td class="">
-                    {{ article.visible_comments.length }}
-                  </td>
-                  <td class="">
-                    {{ article.hidden_comments.length }}
-                  </td>
-                  <td class="">
-                    <commenting-toggle
-                      :article-id="article.uid"
-                      :can-comment="article.can_comment"
-                      @commentingEnabled="refreshArticles"
-                      @commentingDisabled="refreshArticles"
-                    />
-                  </td>
-                  <td class="">
-                    <voting-toggle
-                      :article-id="article.uid"
-                      :can-vote="article.can_vote"
-                      @votingEnabled="refreshArticles"
-                      @votingDisabled="refreshArticles"
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name&nbsp;</th>
+                <th style="">Toggle commenting</th>
+                <th style="">Toggle voting</th>
+                <th>Unique ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="article in articles"
+                :key="article.uid"
+              >
+                <td>
+                  <a
+                    href="#"
+                    @click.prevent="$emit('selectedArticleId', article.uid)"
+                  >
+                    {{ article.title }}
+                  </a>
+                </td>
+                <td class="">
+                  <commenting-toggle
+                    :article-id="article.uid"
+                    :can-comment="article.can_comment"
+                    @commentingEnabled="refreshArticles"
+                    @commentingDisabled="refreshArticles"
+                  />
+                </td>
+                <td class="">
+                  <voting-toggle
+                    :article-id="article.uid"
+                    :can-vote="article.can_vote"
+                    @votingEnabled="refreshArticles"
+                    @votingDisabled="refreshArticles"
+                  />
+                </td>
+                <td class="">
+                  {{ article.uid }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -111,8 +103,19 @@ export default {
 </style>
 
 <style lang="scss">
-  .table-responsive {
-    height: 400px;
-    overflow-y: auto;
+  .table {
+    thead, tbody {
+      display: block;
+    }
+
+    tbody {
+      height: 400px;
+      overflow-x: hidden;
+      overflow-y: scroll;
+    }
+
+    th {
+      width: 200px;
+    }
   }
 </style>

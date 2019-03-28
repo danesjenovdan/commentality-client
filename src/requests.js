@@ -34,6 +34,10 @@ export const refreshToken = () => axiosInstance
   .then(response => response.data)
   .catch((error) => { throw error.response.data; });
 
+export const refreshLongToken = () => axiosInstance
+  .post('/users/refresh_long', {})
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
 
 export const register = (email, password) => axiosInstance
   .post('/users/', { email, password, name: email })
