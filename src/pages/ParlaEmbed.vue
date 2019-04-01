@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import Commentality from '../components/Commentality.vue';
+import Commentality from '../components/ParlaCommentality.vue';
 
 export default {
   name: 'App',
@@ -26,6 +26,7 @@ export default {
   computed: {
   },
   mounted() {
+    console.log('mounted');
     if (typeof window !== 'undefined') {
       const match = window.location.hash.match(/[#&?]id=(.+?)(?:[&]|$)/i);
       if (match && match.length > 1) {
@@ -39,8 +40,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css?family=Sarabun:200,200i,400,700,700i,800,800i&subset=latin-ext');
-
 html {
   box-sizing: border-box;
 
