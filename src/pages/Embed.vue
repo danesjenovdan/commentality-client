@@ -43,23 +43,23 @@ export default {
 
 html {
   box-sizing: border-box;
-}
 
-*, *:before, *:after {
-  box-sizing: inherit;
-}
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-  font-size: 18px;
-  background: transparent;
-}
+  &,
+  body.embed-html {
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    background: transparent;
+  }
 
-body {
-  font-size: 1rem;
-  overflow: hidden;
+  body.embed-html {
+    font-size: 1rem;
+    overflow: hidden;
+  }
 }
 </style>
 
