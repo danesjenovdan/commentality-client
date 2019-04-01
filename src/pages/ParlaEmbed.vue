@@ -64,8 +64,8 @@ html {
 
 <style lang="scss" scoped>
 .container {
-  // max-width: 960px;
-  // padding: $container-padding;
+  max-width: 100%;
+  padding: 0;
   margin: 0 auto;
   height: 100vh;
   overflow: hidden;
