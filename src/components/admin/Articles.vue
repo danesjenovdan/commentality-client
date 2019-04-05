@@ -1,21 +1,22 @@
 <template>
-  <div id="app" class="container">
+  <div class="pt-3">
     <div class="row pb-3">
       <article-creator
         property-id="bba4266cf6264de1ae5a85217e3e0935"
         @articleCreated="refreshArticles"
       />
     </div>
-    <div class="row">
+    <div class="row pb-3">
       <div class="col-md-12">
         <div class="table">
           <table class="table">
             <thead>
               <tr>
                 <th>Name&nbsp;</th>
-                <th style="">Toggle commenting</th>
-                <th style="">Toggle voting</th>
+                <th style="">Commenting</th>
+                <th style="">Voting</th>
                 <th>Unique ID</th>
+                <th>Danger zone</th>
               </tr>
             </thead>
             <tbody>
@@ -50,6 +51,12 @@
                 <td class="">
                   {{ article.uid }}
                 </td>
+                <td>
+                  <button
+                    class="btn btn-danger"
+                    @click="deleteArticle(article.uid)"
+                  >Delete</button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -63,7 +70,7 @@
 import ArticleCreator from './ArticleCreator.vue';
 import CommentingToggle from './CommentingToggle.vue';
 import VotingToggle from './VotingToggle.vue';
-import { getArticlesByProperty } from '../../requests';
+import { getArticlesByProperty, deleteArticle } from '../../requests';
 
 export default {
   name: 'Articles',
@@ -86,6 +93,7 @@ export default {
   watch: {
     propertyId(newValue, oldValue) {
       console.log(newValue, oldValue);
+      this.refreshArticles();
     },
   },
   mounted() {
@@ -94,6 +102,12 @@ export default {
   methods: {
     async refreshArticles() {
       this.articles = await getArticlesByProperty(this.propertyId);
+      console.log(this.articles);
+    },
+    async deleteArticle(uid) {
+      await deleteArticle(uid);
+      this.articles.splice(this.articles.findIndex(e => e.uid === uid), 1);
+      this.$emit('articleDeleted');
     },
   },
 };
@@ -116,6 +130,9 @@ export default {
 
     th {
       width: 200px;
+    }
+    td {
+      word-break: keep-all;
     }
   }
 </style>

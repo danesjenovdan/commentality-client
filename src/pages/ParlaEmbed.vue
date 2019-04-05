@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import Commentality from '../components/ParlaCommentality.vue';
+import Commentality from '../components/Commentality.vue';
 
 export default {
   name: 'App',
@@ -72,6 +72,109 @@ html {
 
   @media (max-width: 575.98px) {
     padding: 0;
+  }
+}
+
+// PARLAMETER STYLES
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab:300&subset=latin-ext');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700&subset=latin-ext');
+
+/deep/ .wrapper {
+  border-radius: 0;
+  box-shadow: none;
+  border: 1px solid #c8c8c8;
+
+  .instructions,
+  .sort {
+    font-style: normal;
+    font-weight: 300;
+    font-family: 'Roboto';
+  }
+
+  .instructions {
+    border-bottom: none;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      position: relative;
+      padding-top: 20px;
+      margin: auto;
+      margin-bottom: -30px;
+
+      border-bottom:1px solid #c8c8c8;
+    }
+  }
+
+  footer {
+    border-top: none;
+    flex-wrap: wrap;
+    padding-left: 1.7rem;
+    padding-right: 1.7rem;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      margin-bottom: 20px;
+
+      border-bottom:1px solid #c8c8c8;
+
+      flex-grow: 1;
+      flex-shrink: 0;
+      flex-basis: 100%;
+    }
+  }
+}
+
+/deep/ .sort {
+  .sort-criterion {
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  .is-selected {
+    color: #009cdd;
+    font-weight: 700;
+  }
+}
+
+/deep/ .comment {
+  background-color: #ffffff !important;
+
+  .text {
+    color: #333333;
+    font-family: "Roboto Slab", serif;
+    font-weight: 300;
+  }
+
+  .option {
+    border-radius: 0;
+
+    &.like {
+      border-color: #009cdd !important;
+      
+      &.chart {
+        background-color: #009cdd !important;
+      }
+    }
+    &.meh {
+      border-color: #197197 !important;
+
+      &.chart {
+        background-color: #197197 !important;
+      }
+    }
+    &.dislike {
+      border-color: #ff5e41 !important;
+
+      &.chart {
+        background-color: #ff5e41 !important;
+      }
+    }
   }
 }
 </style>

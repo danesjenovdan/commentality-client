@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="container">
+  <div class="container">
     <div class="container pb-3">
       <div class="row">
         <comment-creator

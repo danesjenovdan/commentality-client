@@ -2,6 +2,7 @@ import axios from 'axios';
 import { keysToCamel, keysToSnake } from './utils';
 
 const baseURL = 'http://localhost:5000/api/v2';
+// const baseURL = 'https://frontmentality.djnd.si/backend/api/v2';
 let axiosInstance = axios.create({ baseURL });
 
 export const setJwtToken = (token) => {
@@ -57,6 +58,12 @@ export const createArticle = (title, owner) => axiosInstance
   .catch((error) => { throw error.response.data; });
 
 
+export const deleteArticle = (uid) => axiosInstance
+  .delete(`/articles/${uid}`)
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
+
+
 export const patchArticle = (articleId, articleObject) => axiosInstance
   .patch(`/articles/${articleId}`, keysToSnake(articleObject))
   .then(response => response.data)
@@ -65,6 +72,11 @@ export const patchArticle = (articleId, articleObject) => axiosInstance
 
 export const getMyProperties = () => axiosInstance
   .get('/users/my_properties')
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
+
+export const getAllProperties = () => axiosInstance
+  .get('/properties/')
   .then(response => response.data)
   .catch((error) => { throw error.response.data; });
 
