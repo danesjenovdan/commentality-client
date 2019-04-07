@@ -39,6 +39,8 @@ export default {
 };
 </script>
 
+<style lang="scss" src="@/scss/base.scss" />
+
 <style lang="scss">
 html {
   box-sizing: border-box;
@@ -83,6 +85,7 @@ html {
   border-radius: 0;
   box-shadow: none;
   border: 1px solid #c8c8c8;
+  background-color: #f0f0f0;
 
   .instructions,
   .sort {
@@ -143,7 +146,7 @@ html {
 }
 
 /deep/ .comment {
-  background-color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.5) !important;
 
   .text {
     color: #333333;
@@ -153,6 +156,11 @@ html {
 
   .option {
     border-radius: 0;
+    border-width: 1px;
+    border-style: solid;
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    background-color: #ffffff;
 
     &.like {
       border-color: #009cdd !important;

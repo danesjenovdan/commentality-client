@@ -5,12 +5,17 @@
       class="step-begin"
     >
       {{ $t('enter-phone-for-code') }}
-      <input
+      
+      <vue-phone-number-input
         v-model="phoneNumber"
-        type="tel"
-        class="number"
-        :placeholder="$t('phone-number-placeholder')"
-      >
+        default-country-code="SI"
+        :no-validator-state="true"
+        color="rgba(0, 0, 0, 0)"
+        valid-color="rgba(0, 0, 0, 0)"
+        placeholder=""
+        @update="(o) => formattedNumber = o.formattedNumber"
+        :translations="{ phoneNumberLabel: '' }"
+      />
       <button
         class="button confirm"
         @click="fetchCode"
@@ -43,15 +48,19 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import { AuthStep } from '../store';
+import VuePhoneNumberInput from 'vue-phone-number-input';
+import 'vue-phone-number-input/dist/vue-phone-number-input.css';
 
 export default {
   name: 'Login',
   components: {
+    VuePhoneNumberInput,
   },
   data() {
     return {
       phoneNumber: '',
       code: '',
+      formattedNumber: '',
     };
   },
   computed: {
@@ -73,7 +82,7 @@ export default {
     ]),
     async fetchCode() {
       // The server returns our number in a normalized format
-      this.phoneNumber = await this.getCode(this.phoneNumber);
+      this.phoneNumber = await this.getCode(this.formattedNumber);
     },
   },
 };
@@ -83,9 +92,91 @@ export default {
 .login {
   font-size: 14px;
 
+  .step-begin {
+    display: flex;
+    align-items: center;
+
+    @media (max-width: 947px) {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /deep/ .vue-phone-number-input {
+
+      margin: 0;
+
+      @media (max-width: 767px) {
+        & {
+          margin-top: 20px;
+          margin-bottom: 20px;
+        }
+      }
+
+      .field.is-focused input {
+        border: none;
+      }
+
+      .field-input {
+        border: 1px solid transparent;
+        padding-top: 0;
+        min-height: 0;
+        $height: 1.625rem;
+        height: $height;
+      }
+
+      .select-country-container {
+        $height: 1.625rem;
+        border: 1px solid $text-color;
+        border-radius: $height / 2;
+        height: $height;
+        padding: 0 ($height / 3);
+        margin-right: 10px;
+        margin-left: 10px;
+
+        .flag-container {
+          top: 10.5px;
+        }
+
+        .country-selector-arrow {
+          transform: matrix(1, 0, 0, 1, 0, 0);
+          top: calc(50% - 11px)
+        }
+
+        .field-label {
+          display: none;
+        }
+      }
+
+      .input-phone-number {
+        $height: 1.625rem;
+        border: 1px solid $text-color;
+        border-radius: $height / 2;
+        height: $height;
+        padding: 0 ($height / 3);
+        margin-right: 10px;
+        max-width: 130px;
+
+        .field-label {
+          display: none;
+        }
+      }
+    }
+  }
+
   .number {
-    width: 150px;
+    width: 250px;
     margin: 1.75rem 1rem 0;
+    display: flex;
+  }
+
+  .button {
+    flex-shrink: 0;
+
+    @media (min-width: 768px) and (max-width: 947px) {
+      & {
+        margin-top: 10px;
+      }
+    }
   }
 }
 </style>

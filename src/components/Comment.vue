@@ -7,7 +7,7 @@
         v-text="contents"
       />
       <div class="options">
-        <div class="options-container">
+        <div :class="['options-container', {'results-container': voted}]">
           <div
             v-for="action in actions"
             :key="action"
@@ -21,7 +21,7 @@
             />
           </div>
         </div>
-        <div class="options-container">
+        <div :class="['options-container', {'results-container': voted}]">
           <div
             v-for="action in actions"
             :key="action"
@@ -117,6 +117,7 @@ export default {
   background-color: $bg-accent-color;
   border-radius: 0.5rem;
   position: relative;
+  flex-wrap: wrap;
 
   @media (max-width: 575.98px) {
     margin: 0.75rem 0;
@@ -159,8 +160,12 @@ export default {
       align-items: center;
       display: flex;
 
-      @media (max-width: 767.98px) {
+      @media (max-width: 823px) {
         flex-direction: column;
+
+        &.results-container {
+          flex-direction: row;
+        }
       }
     }
 
@@ -171,6 +176,11 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
+
+      line-height: 30px !important;
+      padding-left: 35px;
+      padding-right: 15px;
+      flex-wrap: nowrap;
 
       &.chart {
         height: 12px;
@@ -213,7 +223,7 @@ export default {
           &:before { content: '👎' }
         }
 
-        @media (max-width: 767.98px) { margin-bottom: 0.27rem; }
+        @media (max-width: 823px) { margin-bottom: 0.27rem; }
       }
     }
 
