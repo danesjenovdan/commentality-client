@@ -151,7 +151,7 @@ export default {
 
     @media (max-width: 575.98px) {
       padding: 0 0 1rem 0;
-      font-size: 1.25rem;
+      font-size: 1rem;
     }
   }
 
@@ -181,6 +181,10 @@ export default {
       padding-left: 35px;
       padding-right: 15px;
       flex-wrap: nowrap;
+
+      @media (max-width: 823px) {
+        min-height: 30px !important;
+      }
 
       &.chart {
         height: 12px;
@@ -223,7 +227,9 @@ export default {
           &:before { content: '👎' }
         }
 
-        @media (max-width: 823px) { margin-bottom: 0.27rem; }
+        @media (max-width: 823px) {
+          margin-bottom: 0.27rem;
+        }
       }
     }
 
