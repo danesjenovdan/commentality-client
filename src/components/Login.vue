@@ -5,7 +5,6 @@
       class="step-begin"
     >
       {{ $t('enter-phone-for-code') }}
-      
       <vue-phone-number-input
         v-model="phoneNumber"
         default-country-code="SI"
@@ -13,8 +12,8 @@
         color="rgba(0, 0, 0, 0)"
         valid-color="rgba(0, 0, 0, 0)"
         placeholder=""
-        @update="(o) => formattedNumber = o.formattedNumber"
         :translations="{ phoneNumberLabel: '' }"
+        @update="(o) => formattedNumber = o.formattedNumber"
       />
       <button
         class="button confirm"
@@ -47,8 +46,8 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { AuthStep } from '../store';
 import VuePhoneNumberInput from 'vue-phone-number-input';
+import { AuthStep } from '../store';
 import 'vue-phone-number-input/dist/vue-phone-number-input.css';
 
 export default {
@@ -92,7 +91,7 @@ export default {
 .login {
   font-size: 14px;
 
-  .step-begin {
+  .step-begin, .step-verify {
     display: flex;
     align-items: center;
 
@@ -100,15 +99,17 @@ export default {
       flex-wrap: wrap;
       justify-content: center;
     }
+  }
 
+  .step-begin {
     /deep/ .vue-phone-number-input {
 
       margin: 0;
 
       @media (max-width: 767px) {
         & {
-          margin-top: 20px;
-          margin-bottom: 20px;
+          margin-top: 1rem;
+          margin-bottom: 1rem;
         }
       }
 
@@ -161,20 +162,23 @@ export default {
         }
       }
     }
+
+    .button {
+      flex-shrink: 0;
+
+      @media (min-width: 768px) and (max-width: 947px) {
+        & { margin-top: 0.5rem; }
+      }
+    }
   }
 
-  .number {
-    width: 250px;
-    margin: 1.75rem 1rem 0;
-    display: flex;
-  }
+  .step-verify {
+    .number {
+      max-width: 5rem;
+      margin: 0 1rem;
 
-  .button {
-    flex-shrink: 0;
-
-    @media (min-width: 768px) and (max-width: 947px) {
-      & {
-        margin-top: 10px;
+      @media (max-width: 767px) {
+        & { margin: 1rem; }
       }
     }
   }
