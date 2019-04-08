@@ -26,8 +26,9 @@
       name="fade"
       mode="out-in"
     >
+      <!-- v-if="finishedVoting && !commented" -->
       <comment-input
-        v-if="finishedVoting && !commented"
+        v-if="false"
         @sendComment="sendComment"
       />
     </transition>
