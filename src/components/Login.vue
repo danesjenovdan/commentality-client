@@ -4,7 +4,7 @@
       v-if="step === 'number'"
       class="step-begin"
     >
-      {{ $t('enter-phone-for-code') }}
+      <span class="instructions-text">{{ $t('enter-phone-for-code') }}</span>
       <vue-phone-number-input
         v-model="phoneNumber"
         default-country-code="SI"
@@ -90,6 +90,10 @@ export default {
 <style lang="scss" scoped>
 .login {
   font-size: 14px;
+
+  .instructions-text {
+    max-width: 280px;
+  }
 
   .step-begin, .step-verify {
     display: flex;
