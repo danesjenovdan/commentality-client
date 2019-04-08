@@ -23,5 +23,5 @@ export default (comments, criterion) => {
 
   // This covers SortCriterion.Time since raw comments are returned in
   // chronological order from the server and therefore need no manual sorting.
-  return comments;
+  return comments.reverse();
 };
