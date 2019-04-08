@@ -4,7 +4,7 @@
       v-if="step === 'number'"
       class="step-begin"
     >
-      <span class="instructions-text">{{ $t('enter-phone-for-code') }}</span>
+      <span class="instructions-text">{{ $t('enter-phone-for-code') }} <a href="mailto:commentality@danesjenovdan.si">{{ $t('more-info') }}</a></span>
       <vue-phone-number-input
         v-model="phoneNumber"
         default-country-code="SI"
@@ -103,6 +103,10 @@ export default {
       flex-wrap: wrap;
       justify-content: center;
     }
+  }
+
+  a {
+    color: #000000;
   }
 
   .step-begin {
