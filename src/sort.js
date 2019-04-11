@@ -21,7 +21,11 @@ export default (comments, criterion) => {
     }).reverse();
   }
 
-  // This covers SortCriterion.Time since raw comments are returned in
-  // chronological order from the server and therefore need no manual sorting.
-  return comments.reverse();
+  if (criterion === SortCriterion.Time) {
+    return sortBy(comments, (comment) => {
+      return new Date(comment.created_at);
+    }).reverse();
+  }
+
+  return comments;
 };
