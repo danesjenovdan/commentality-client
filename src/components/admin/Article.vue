@@ -18,6 +18,7 @@
                   <th>Text</th>
                   <th>Status</th>
                   <th style="">Moderate</th>
+                  <th>Update</th>
                 </tr>
               </thead>
               <tbody>
@@ -25,7 +26,7 @@
                   v-for="statement in comments"
                   :key="statement.uid"
                 >
-                  <td><a href="">{{ statement.contents }}</a></td>
+                  <td><input class="form-control" v-model="statement.contents" /></td>
                   <td class="">{{ statement.pending ? 'Pending' : statement.visible ? 'Visible' : 'Hidden'}}</td>
                   <td class="">
                     <visibility-toggle
@@ -34,6 +35,9 @@
                       @commentingEnabled="getComments"
                       @commentingDisabled="getComments"
                     />
+                  </td>
+                  <td>
+                    <button class="btn btn-default" @click="patchComment(statement.uid, statement.contents)">Save</button>
                   </td>
                 </tr>
               </tbody>
@@ -48,7 +52,7 @@
 <script>
 import CommentCreator from './CommentCreator.vue';
 import VisibilityToggle from './VisibilityToggle.vue';
-import { getArticle } from '../../requests';
+import { getArticle, patchComment } from '../../requests';
 
 export default {
   name: 'AnArticle',
@@ -74,6 +78,14 @@ export default {
     async getComments() {
       const article = await getArticle(this.articleId);
       this.comments = article.visibleComments.concat(article.hiddenComments).sort((a, b) => new Date(a.createdAt) < new Date(b.createdAt));
+    },
+    async patchComment(commentId, contents) {
+      const comment = await patchComment(commentId, contents);
+      if (comment.contents === contents) {
+        alert('Uspešno shranjeno!');
+      } else {
+        alert('Nekaj je šlo narobe. :( Poglej v konzolo in/ali poskusi ponovno.')
+      }
     },
   },
   watch: {
