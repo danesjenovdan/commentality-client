@@ -94,6 +94,12 @@ export const createComment = (articleId, contents) => axiosInstance
   .then(response => response.data)
   .catch((error) => { throw error.response.data; });
 
+  export const patchComment = (commentId, contents) => axiosInstance
+  .patch(`/comments/${commentId}`, {
+    contents,
+  })
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
 
 export const hideComment = commentId => axiosInstance
   .post(`/comments/hide/${commentId}`, {})
