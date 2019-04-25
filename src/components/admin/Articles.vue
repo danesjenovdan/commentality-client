@@ -2,7 +2,7 @@
   <div class="pt-3">
     <div class="row pb-3">
       <article-creator
-        property-id="bba4266cf6264de1ae5a85217e3e0935"
+        :property-id="propertyId"
         @articleCreated="refreshArticles"
       />
     </div>
