@@ -86,11 +86,7 @@ export default {
   },
 
   async created() {
-    this.properties = await getMyProperties();
-
-    if (this.properties.length === 1) {
-      this.selectedPropertyId = this.properties[0].uid;
-    }
+    this.refreshProperties();
   },
 };
 </script>
