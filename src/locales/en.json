@@ -8,6 +8,11 @@
   "enter": "Enter",
   "comment-input-placeholder": "Enter comment here",
   "send-comment": "Send comment",
+  "add-statement": "Add comment.",
+  "statement-disclaimer": "Comments will be edited and moderated.",
+  "statement-requirements": "To submit a comment, you have to cast all your votes",
+  "thank-you": "Thank you!",
+  "thank-you-content": "Your statement will be published soon.",
   "choices": {
     "like": "I agree",
     "dislike": "I disagree",

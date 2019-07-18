@@ -28,8 +28,10 @@
     >
       <!-- v-if="finishedVoting && !commented" -->
       <comment-input
-        v-if="false"
-        @sendComment="sendComment"
+        class="comment-input-container"
+        :article-id="articleId"
+        :finished-voting="finishedVoting"
+        v-if="true"
       />
     </transition>
     <c-footer />
@@ -149,6 +151,12 @@ export default {
 
   @media (max-width: 575.98px) {
     padding: 0 #{$wrapper-padding / 2};
+  }
+}
+
+.comment-input-container {
+  @media (max-width: 575.98px) {
+    margin: 0 -1rem;
   }
 }
 
