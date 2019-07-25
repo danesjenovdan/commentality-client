@@ -26,7 +26,6 @@
       name="fade"
       mode="out-in"
     >
-      <!-- v-if="finishedVoting && !commented" -->
       <comment-input
         class="comment-input-container"
         :article-id="articleId"
