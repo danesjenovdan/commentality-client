@@ -82,7 +82,10 @@ export default {
     await this.refreshJwtToken();
 
     this.properties = await getMyProperties();
-    this.selectedPropertyId = this.properties[0].uid;
+
+    if (this.properties.length) {
+      this.selectedPropertyId = this.properties[0].uid;
+    }
     this.longTermToken = await refreshLongToken();
   },
 };
