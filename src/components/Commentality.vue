@@ -141,7 +141,6 @@ export default {
 
 .scroll-container {
   overflow-x: hidden;
-  overflow-y: scroll;
   margin-left: -$wrapper-padding;
   margin-right: -$wrapper-padding;
   padding: 0 $wrapper-padding;
@@ -158,13 +157,9 @@ export default {
   box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.1);
   font-family: $font-family;
   background: $bg-color;
-  height: calc(100vh - #{$container-padding * 2});
   display: flex;
   flex-direction: column;
 
-  @media (max-width: 575.98px) {
-    height: 100vh;
-  }
 
   .instructions {
     font-size: 0.8rem;

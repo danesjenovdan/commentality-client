@@ -58,7 +58,6 @@ html {
 
   body.embed-html {
     font-size: 1rem;
-    overflow: hidden;
   }
 }
 </style>
@@ -68,8 +67,6 @@ html {
   max-width: 960px;
   padding: $container-padding;
   margin: 0 auto;
-  height: 100vh;
-  overflow: hidden;
 
   @media (max-width: 575.98px) {
     padding: 0;
