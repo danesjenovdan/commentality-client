@@ -4,6 +4,7 @@
   "enter-phone-for-code": "Vnesi telefonsko številko za prejem kode. Tvoje telefonske številke ne hranimo. Pobrišemo jo takoj, ko ti pošljemo SMS, na strežnik pa shranimo le neprepoznavno zaporedje znakov (hash).",
   "more-info": "Več informacij",
   "enter-code-for-results": "Vnesi kodo za prikaz rezultatov.",
+  "creating-anonymous-identity": "Kreiramo tvoj anonimni račun ...",
   "get-code": "Pridobi kodo",
   "phone-number-placeholder": "+386 41 123 456",
   "enter": "Vnesi",

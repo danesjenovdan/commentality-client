@@ -30,7 +30,7 @@
         class="comment-input-container"
         :article-id="articleId"
         :finished-voting="finishedVoting"
-        v-if="true"
+        v-if="commentingAllowed"
       />
     </transition>
     <c-footer />
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapMutations, mapGetters, mapActions } from 'vuex';
 import { findIndex } from 'lodash';
 
 import sortBy, { SortCriterion } from '../sort';
@@ -68,6 +68,7 @@ export default {
     return {
       article: null,
       currentSortCriterion: SortCriterion.Time,
+      commentingAllowed: false,
     };
   },
   computed: {
@@ -106,9 +107,15 @@ export default {
     ...mapActions([
       'refreshJwtToken',
     ]),
+    ...mapMutations([
+      'SET_REQUIRE_LOGIN',
+    ]),
     async fetchComments() {
       const article = await getArticle(this.articleId);
+      console.log(article);
       this.article = article;
+      this.commentingAllowed = article.canComment;
+      this.SET_REQUIRE_LOGIN(article.requireLogin);
     },
     async sendVote({ uid, type }) {
       const updatedComment = await voteOnComment(uid, type);

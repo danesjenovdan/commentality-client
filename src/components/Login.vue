@@ -23,7 +23,7 @@
       </button>
     </div>
     <div
-      v-else-if="step === 'token'"
+      v-else-if="(step === 'token') && requireLogin"
       class="step-verify"
     >
       {{ $t('enter-code-for-results') }}
@@ -36,10 +36,16 @@
       >
       <button
         class="button confirm"
-        @click="submitCode({phoneNumber, code})"
+        @click="submitCode({uid, code})"
       >
         {{ $t('enter') }}
       </button>
+    </div>
+    <div
+      v-else-if="(step == 'token') && !requireLogin"
+      class="step-verfiy"
+    >
+      {{ $t('creating-anonymous-identity') }}
     </div>
   </div>
 </template>
@@ -60,12 +66,15 @@ export default {
       phoneNumber: '',
       code: '',
       formattedNumber: '',
+      uid: null,
+      propertyName: 'Commentality',
     };
   },
   computed: {
     ...mapGetters([
       'userId',
       'authStep',
+      'requireLogin',
     ]),
     step() {
       return this.authStep === AuthStep.StartedVerification
@@ -78,11 +87,31 @@ export default {
       'storeAuthData',
       'getCode',
       'submitCode',
+      'loginAnonymously',
     ]),
     async fetchCode() {
       // The server returns our number in a normalized format
-      this.phoneNumber = await this.getCode(this.formattedNumber);
+      console.log(this.phoneNumber, this.propertyName);
+      this.uid = await this.getCode({
+        phoneNumber: this.formattedNumber,
+        propertyName: this.propertyName
+      });
     },
+  },
+  created() {
+    if (!this.requireLogin) {
+      console.log(this.requireLogin);
+      console.log('PING!!!')
+      this.loginAnonymously(this.propertyName);
+    }
+    if (typeof window !== 'undefined') {
+      const match = window.location.href.match(/[?&]property_name=(.+?)(?:[&#]|$)/i);
+      if (match && match.length > 1) {
+        // eslint-disable-next-line prefer-destructuring
+        this.propertyName = match[1];
+        console.log('propertyName =', this.propertyName);
+      }
+    }
   },
 };
 </script>

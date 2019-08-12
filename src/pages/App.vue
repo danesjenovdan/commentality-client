@@ -4,7 +4,7 @@
     class="container"
   >
     <fake-article />
-    <commentality article-id="84a57b37a54c49d6820d2c7d609a48af" />
+    <commentality article-id="1204c865b9dd4fb68ab4d63be6c5999b" />
   </div>
 </template>
 
