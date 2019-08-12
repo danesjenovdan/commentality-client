@@ -8,59 +8,64 @@
     </div>
     <div class="row pb-3">
       <div class="col-md-12">
-        <div class="table">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Name&nbsp;</th>
-                <th style="">Commenting</th>
-                <th style="">Voting</th>
-                <th>Unique ID</th>
-                <th>Danger zone</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="article in articles"
-                :key="article.uid"
+        <ul class="table">
+          <li
+            v-for="article in articles"
+            :key="article.uid"
+          >
+            <div class="name">
+              <a
+                href="#"
+                @click.prevent="selectedArticleId = article.uid"
               >
-                <td>
-                  <a
-                    href="#"
-                    @click.prevent="$emit('selectedArticleId', article.uid)"
-                  >
-                    {{ article.title }}
-                  </a>
-                </td>
-                <td class="">
-                  <commenting-toggle
-                    :article-id="article.uid"
-                    :can-comment="article.can_comment"
-                    @commentingEnabled="refreshArticles"
-                    @commentingDisabled="refreshArticles"
-                  />
-                </td>
-                <td class="">
-                  <voting-toggle
-                    :article-id="article.uid"
-                    :can-vote="article.can_vote"
-                    @votingEnabled="refreshArticles"
-                    @votingDisabled="refreshArticles"
-                  />
-                </td>
-                <td class="">
-                  {{ article.uid }}
-                </td>
-                <td>
-                  <button
-                    class="btn btn-danger"
-                    @click="deleteArticle(article.uid)"
-                  >Delete</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                {{ article.title }}
+              </a>
+            </div>
+            <div>
+              Commenting
+              <commenting-toggle
+                :article-id="article.uid"
+                :can-comment="article.can_comment"
+                @commentingEnabled="refreshArticles"
+                @commentingDisabled="refreshArticles"
+              />
+            </div>
+            <!-- <div>
+              Voting
+              <voting-toggle
+                :article-id="article.uid"
+                :can-vote="article.can_vote"
+                @votingEnabled="refreshArticles"
+                @votingDisabled="refreshArticles"
+              />
+            </div> -->
+            <div>
+              Login required
+              <login-toggle
+                :article-id="article.uid"
+                :require-login="article.require_login"
+                @loginON="refreshArticles"
+                @loginOFF="refreshArticles"
+              />
+            </div>
+            <div>
+              Article ID<br>
+              {{ article.uid }}
+            </div>
+            <div>
+              <button
+                class="btn btn-danger"
+                @click="deleteArticle(article.uid)"
+              >Delete</button>
+            </div>
+            <div class="statements">
+              <an-article
+                v-if="selectedArticleId == article.uid"
+                :article-id="selectedArticleId"
+              />
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -70,6 +75,8 @@
 import ArticleCreator from './ArticleCreator.vue';
 import CommentingToggle from './CommentingToggle.vue';
 import VotingToggle from './VotingToggle.vue';
+import LoginToggle from './LoginToggle.vue';
+import AnArticle from './Article.vue';
 import { getArticlesByProperty, deleteArticle } from '../../requests';
 
 export default {
@@ -78,6 +85,8 @@ export default {
     ArticleCreator,
     CommentingToggle,
     VotingToggle,
+    LoginToggle,
+    AnArticle,
   },
   props: {
     propertyId: {
@@ -88,6 +97,7 @@ export default {
   data() {
     return {
       articles: [],
+      selectedArticleId: '',
     };
   },
   watch: {
@@ -117,22 +127,36 @@ export default {
 </style>
 
 <style lang="scss">
-  .table {
-    thead, tbody {
-      display: block;
-    }
+  ul.table {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 
-    tbody {
-      height: 400px;
-      overflow-x: hidden;
-      overflow-y: scroll;
-    }
+    overflow-y: auto;
 
-    th {
-      width: 200px;
-    }
-    td {
-      word-break: keep-all;
+    li {
+
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      list-style: none;
+      border-bottom: 1px solid #f0f0f0;
+      padding: 8px 0;
+
+      div {
+        flex: 1;
+        margin: 0 8px;
+        text-align: center;
+
+        &.name {
+          min-width: 80px;
+          overflow-y: auto;
+        }
+      }
+
+      .statements {
+        width: 100%;
+      }
     }
   }
 </style>

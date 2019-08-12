@@ -15,18 +15,20 @@
       <div class="form-group row">
         <label
           for="inputmailh"
-          class="col-3 col-form-label"
+          class="col-4 col-form-label"
         >
           Name of the article
         </label>
-        <div class="col-6">
+        <div class="col-4">
           <input
+            v-focus
             v-model="articleName"
             type="text"
             class="form-control"
+            @keypress.enter="createArticle"
           >
         </div>
-        <div class="col-3">
+        <div class="col-4">
           <button
             class="btn btn-primary"
             @click="createArticle"
@@ -50,6 +52,13 @@ export default {
       required: true,
     },
   },
+  directives: {
+    focus: {
+      inserted: function (el) {
+        el.focus()
+      }
+    },
+  },
   data() {
     return {
       articleName: '',
@@ -60,6 +69,7 @@ export default {
     async createArticle() {
       await createArticle(this.articleName, this.propertyId);
       this.articleCreatorVisible = false;
+      this.articleName = '';
       this.$emit('articleCreated');
     },
   },

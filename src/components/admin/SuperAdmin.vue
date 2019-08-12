@@ -47,7 +47,6 @@
 
 <script>
 import Articles from './Articles.vue';
-import AnArticle from './Article.vue';
 import PropertyCreator from './PropertyCreator.vue';
 import { getMyProperties } from '../../requests.js';
 
@@ -56,7 +55,6 @@ export default {
 
   components: {
     Articles,
-    AnArticle,
     PropertyCreator,
   },
 
