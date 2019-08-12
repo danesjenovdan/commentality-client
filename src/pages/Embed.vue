@@ -27,7 +27,7 @@ export default {
   },
   mounted() {
     if (typeof window !== 'undefined') {
-      const match = window.location.hash.match(/[#&?]id=(.+?)(?:[&]|$)/i);
+      const match = window.location.hash.match(/[#&?]id=(.+?)(?:[?&]|$)/i);
       if (match && match.length > 1) {
         // eslint-disable-next-line prefer-destructuring
         this.articleId = match[1];

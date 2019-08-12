@@ -18,14 +18,18 @@ export const login = (email, password) => axiosInstance
   .catch((error) => { throw error.response.data; });
 
 
-export const getCode = number => axiosInstance
-  .post('/users/', { number })
+export const getCode = (number, property_name) => axiosInstance
+  .post('/users/', { number, property_name })
   .then(response => response.data)
   .catch((error) => { throw error.response.data; });
 
+export const getAnonymousCode = (property_name) => axiosInstance
+  .post('/users/', { property_name })
+  .then(response => response.data)
+  .catch((error) => { throw error.response.data; });
 
-export const verifyCode = (number, code) => axiosInstance
-  .post('/users/verify', { number, code })
+export const verifyCode = (uid, code) => axiosInstance
+  .post('/users/verify', { uid, code })
   .then(response => response.data)
   .catch((error) => { throw error.response.data; });
 

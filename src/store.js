@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { getCode, refreshToken, setJwtToken, verifyCode } from './requests';
+import { getCode, refreshToken, setJwtToken, verifyCode, getAnonymousCode } from './requests';
 
 Vue.use(Vuex);
 
@@ -16,6 +16,7 @@ export default new Vuex.Store({
     authStep: AuthStep.Unauthenticated,
     jwt: null,
     userId: null,
+    requireLogin: true,
   },
   mutations: {
     SET_AUTH_STEP(state, newState) {
@@ -27,12 +28,16 @@ export default new Vuex.Store({
     SET_USER_ID(state, newUserId) {
       state.userId = newUserId;
     },
+    SET_REQUIRE_LOGIN(state, newRequireLogin) {
+      state.requireLogin = newRequireLogin;
+    },
   },
   getters: {
     authStep: state => state.authStep,
     authenticated: state => state.authStep === AuthStep.Authenticated,
     jwt: state => state.jwt,
     userId: state => state.userId,
+    requireLogin: state => state.requireLogin,
   },
   actions: {
     async refreshJwtToken({ dispatch }) {
@@ -57,8 +62,8 @@ export default new Vuex.Store({
         }
       }
     },
-    async submitCode({ dispatch }, { phoneNumber, code }) {
-      const data = await verifyCode(phoneNumber, code);
+    async submitCode({ dispatch }, { uid, code }) {
+      const data = await verifyCode(uid, code);
 
       dispatch('storeAuthData', {
         jwtToken: data.jwt_token,
@@ -68,9 +73,10 @@ export default new Vuex.Store({
     startVerification({ commit }) {
       commit('SET_AUTH_STEP', AuthStep.StartedVerification);
     },
-    getCode({ commit }, phoneNumber) {
+    getCode({ commit }, { phoneNumber, propertyName} ) {
+      console.log(phoneNumber, propertyName);
       commit('SET_AUTH_STEP', AuthStep.RequestedCode);
-      return getCode(phoneNumber);
+      return getCode(phoneNumber, propertyName);
     },
     storeAuthData({ commit }, { jwtToken, userId }) {
       commit('SET_JWT', jwtToken);
@@ -80,6 +86,16 @@ export default new Vuex.Store({
 
       window.localStorage.setItem('commentalityUID', userId);
       window.localStorage.setItem('commentalityTOKEN', jwtToken);
+    },
+    async loginAnonymously({ commit, dispatch }, propertyName) {
+      commit('SET_AUTH_STEP', AuthStep.StartedVerification);
+      commit('SET_AUTH_STEP', AuthStep.RequestedCode);
+      console.log('getting anon code');
+      const uid = await getAnonymousCode(propertyName);
+      dispatch('submitCode', {
+        uid,
+        code: '266696682',
+      });
     },
   },
 });
