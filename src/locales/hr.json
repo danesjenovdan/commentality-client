@@ -1,0 +1,34 @@
+{
+  "public-opinion": "Javno mijenje",
+  "please-vote-to-see-opinion": "Glasajte da vidite rezultate javnog mijenja",
+  "enter-phone-for-code": "Unesite telefonski broj za kod",
+  "more-info": "Više informacija",
+  "enter-code-for-results": "Unesite kod za rezultate",
+  "creating-anonymous-identity": "Kreiramo vaš anonimni račun ...",
+  "get-code": "Dobijte kod",
+  "phone-number-placeholder": "+386 41 123 456",
+  "enter": "Unesite",
+  "comment-input-placeholder": "Unesite komentar ovdje",
+  "send-comment": "Pošaljite komentar",
+  "add-statement": "Dodajte komentar.",
+  "statement-disclaimer": "Komentari će biti uređeni i moderirani",
+  "statement-requirements": "Za dodavanje komentara morate dati glas na sve stavove",
+  "thank-you": "Hvala!",
+  "thank-you-content": "Vaši stavovi će uskoro biti objavljeni",
+  "choices": {
+    "like": "Sviđa mi se",
+    "dislike": "Ne sviđa mi se",
+    "meh": "Ne znam"
+  },
+  "sort": {
+    "sort-by": "Razvrstaj po",
+    "time": "Dodano vrijeme",
+    "consensus": "Slaganje",
+    "indifference": "Neopredjeljenost"
+  },
+  "result-labels": {
+    "like": "Slaganje",
+    "dislike": "Neslaganje",
+    "meh": "Nemam mišljenje"
+  }
+}
