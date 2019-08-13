@@ -160,7 +160,7 @@ export default {
       align-items: center;
       display: flex;
 
-      @media (max-width: 823px) {
+      @media (max-width: 575.99px) {
         flex-direction: column;
 
         &.results-container {
@@ -182,7 +182,7 @@ export default {
       padding-right: 15px;
       flex-wrap: nowrap;
 
-      @media (max-width: 823px) {
+      @media (max-width: 575.99px) {
         min-height: 30px !important;
       }
 
@@ -227,7 +227,7 @@ export default {
           &:before { content: '👎' }
         }
 
-        @media (max-width: 823px) {
+        @media (max-width: 575.99px) {
           margin-bottom: 0.27rem;
         }
       }
