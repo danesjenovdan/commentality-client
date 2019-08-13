@@ -16,8 +16,8 @@
   "thank-you": "Hvala!",
   "thank-you-content": "Vaši stavovi će uskoro biti objavljeni",
   "choices": {
-    "like": "Sviđa mi se",
-    "dislike": "Ne sviđa mi se",
+    "like": "Slažem se",
+    "dislike": "Ne slažem se",
     "meh": "Ne znam"
   },
   "sort": {
