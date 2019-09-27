@@ -69,8 +69,6 @@ html {
   max-width: 100%;
   padding: 0;
   margin: 0 auto;
-  height: 100vh;
-  overflow: hidden;
 
   @media (max-width: 575.98px) {
     padding: 0;
